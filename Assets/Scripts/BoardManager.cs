@@ -96,9 +96,11 @@ public class BoardManager : MonoBehaviour {
 				// Quaternion.identity means no rotation
 				Vector3 objectTransform = new Vector3(x, y, 0f);
 				TouchableTile tileInstance = Instantiate(toInstantiate, objectTransform, Quaternion.identity);
+				tileInstance.transform.SetParent(boardHolder);
 
 				// Store the object in the game dictionary
 				tilePositions.Add(objectTransform, tileInstance);
+
 			}
 				
 		} 
@@ -209,4 +211,9 @@ public class BoardManager : MonoBehaviour {
 
 		#endif		
 	}
+
+	public void EndLevel() {
+		Debug.Log("BoardManager endLevel");
+	}
+
 }

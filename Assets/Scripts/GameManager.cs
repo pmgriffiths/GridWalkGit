@@ -24,12 +24,17 @@ public class GameManager : MonoBehaviour {
 	// Game scene name
 	public string mainSceneName;
 
-	// Are the in the menu
-	private bool displayMenu = true;
-
 	// Public Variables
 	private int columns = 8;
 	private int rows = 8;
+
+	// Row + Column display text
+	private Text rowText;
+	private Text columnText;
+
+	// Row + Column sliders
+	private Slider rowSlider;
+	private Slider columnSlider;
 
 	// Ensure we're a singleton
 	public static GameManager instance = null;
@@ -38,11 +43,12 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
+
+		Debug.Log("GameManager is awake. Instance is null ? " + (instance == null));
+
 		if (instance == null) {
 			instance = this;
-			InitMenu();
-		} else if (instance != null) {
-			// Destroy(gameObject);
+			// InitMenu();
 		}
 
 		// Persist game manager between scenes
@@ -56,11 +62,13 @@ public class GameManager : MonoBehaviour {
 
 		SceneManager.activeSceneChanged += ChangedScene;
 
-/**		if (displayMenu) {
-			InitMenu();
-		} else {
-			InitGame();
-		} */
+		// Text for rows + columns
+		Debug.Log("Getting rows + columns");
+		rowText = GameObject.Find("RowText").GetComponent<Text>();
+		columnText = GameObject.Find("ColumnText").GetComponent<Text>();
+		rowSlider = GameObject.Find("RowSlider").GetComponent<Slider>();
+		columnSlider = GameObject.Find("ColumnSlider").GetComponent<Slider>();
+	
 	}
 
 	void ChangedScene(Scene previousScene, Scene newScene) {
@@ -69,23 +77,17 @@ public class GameManager : MonoBehaviour {
 		if (newScene.name.Equals(mainSceneName)) {
 			// The game board was loaded so display it
 			InitGame();
+		} else {
+			// Set the menu back up 
+			InitMenu();
 		}
 	}
-
-/**	private void OnLevelWasLoaded(int index)
-	{
-		Debug.Log("GameManger.OnLevelWasLoaded displayMenu" + displayMenu);
-		if (SceneManager.GetActiveScene().name.Equals(mainSceneName)) {
-			level++;
-			InitGame();
-		}
-	} 
-*/
 
 	// Initialise the menu scene
 	void InitMenu() {
 //		SceneManager.LoadScene(menuSceneName);
-		Debug.Log("InitMenu called and change to scene: " + menuSceneName);
+		Debug.Log("InitMenu");
+		UpdateRowsAndColumns();
 	}
 
 	// Initialise the game board 
@@ -104,17 +106,19 @@ public class GameManager : MonoBehaviour {
 	public void StartLevel() {
 		Debug.Log("StartLevel: " + mainSceneName);
 		// Application.LoadLevel(sceneIndex);
-		displayMenu = false;
 		SceneManager.LoadScene(mainSceneName, LoadSceneMode.Single);
 
 	}
 
 	public void EndLevel() {
-		// Application.LoadLevel(sceneIndex);
-		Debug.Log("EndLevel: " + menuSceneName);
-		displayMenu = true;
-		boardScript.EnableInput(false);
-		SceneManager.LoadScene(menuSceneName, LoadSceneMode.Single);
+		Debug.Log("GameManager endLevel");
+		if (instance != null) {
+			Debug.Log("EndLevel: " + instance.menuSceneName);
+			instance.boardScript.EnableInput(false);
+			SceneManager.LoadScene(instance.menuSceneName, LoadSceneMode.Single);
+		} else { 
+			Debug.LogError("GameManager instance is null");
+		}
 	}
 
 	private void HideLevelImage() {
@@ -127,13 +131,23 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void UpdateRows(Slider rowSlider) {
-		this.rows = (int)rowSlider.value;
-		Debug.Log("UpdateRows to " + rows);
+		instance.rows = (int)rowSlider.value;
+		UpdateRowsAndColumns();
+		// Debug.Log("UpdateRows to " + rows);
 	}
 
 	public void UpdateColumns(Slider columnSlider) { 
-		this.columns = (int)columnSlider.value;
-		Debug.Log("UpdateColumns to " + columns);
+		instance.columns = (int)columnSlider.value;
+		UpdateRowsAndColumns();
+		// Debug.Log("UpdateColumns to " + columns);
+	}
+
+	private void UpdateRowsAndColumns() { 
+		rowText.text = instance.rows.ToString();	
+		rowSlider.value = instance.rows;
+		columnText.text = instance.columns.ToString();
+		columnSlider.value = instance.columns;
+
 	}
 
 }

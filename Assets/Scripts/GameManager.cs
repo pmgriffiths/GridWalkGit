@@ -13,9 +13,6 @@ public class GameManager : MonoBehaviour {
 	// time to display level text
 	public float levelStartDelay = 2f;
 
-
-	// Test change for git hub
-
 	private Text levelText;
 
 	// Reference to cover image

@@ -55,6 +55,7 @@ MonoBehaviour:
   floorSprites:
   - {fileID: 21300016, guid: 80163e401f7e04ce99393e38024462e9, type: 3}
   - {fileID: 21300012, guid: 80163e401f7e04ce99393e38024462e9, type: 3}
+  - {fileID: 21300006, guid: 80163e401f7e04ce99393e38024462e9, type: 3}
   - {fileID: 21300002, guid: 80163e401f7e04ce99393e38024462e9, type: 3}
   brokenFloor: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   color: {r: 1, g: 1, b: 1, a: 1}

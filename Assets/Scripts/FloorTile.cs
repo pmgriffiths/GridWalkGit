@@ -119,12 +119,14 @@ public class FloorTile : TouchableTile {
 	}
 
 	// Can we start a touch sequence ? 
-	public override bool CommenceTouch() {
+	public override bool CommenceTouch(out TouchableTile.TileType tileType) {
+		tileType = TileType.Floor;
 		return false;
 	}
 
 	// Can we finish a touch seqeunce
-	public override bool FinishTouch() {
+	public override bool CanFinishTouch(out TouchableTile.TileType tileType) {
+		tileType = TileType.Floor;
 		return false;
 	}
 

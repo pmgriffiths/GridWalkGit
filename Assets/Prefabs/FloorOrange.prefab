@@ -53,6 +53,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 1}
+  wallTiles:
+  - {fileID: 21300006, guid: b3ec37541369748df9f06d80f45358e7, type: 3}
+  - {fileID: 21300008, guid: b3ec37541369748df9f06d80f45358e7, type: 3}
+  - {fileID: 21300010, guid: b3ec37541369748df9f06d80f45358e7, type: 3}
+  - {fileID: 21300018, guid: b3ec37541369748df9f06d80f45358e7, type: 3}
 --- !u!212 &212233402869793690
 SpriteRenderer:
   m_ObjectHideFlags: 1

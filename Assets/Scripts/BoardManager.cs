@@ -64,6 +64,9 @@ public class BoardManager : MonoBehaviour {
 	// Reference to cover image
 	private GameObject levelImage;
 
+	// Tile type of path being drawn
+	TouchableTile.TileType pathTileType;
+
 	public void Awake() {
 		Debug.Log ("BoardManager is awake");
 
@@ -212,35 +215,39 @@ public class BoardManager : MonoBehaviour {
 
 				if (myTouch.phase == TouchPhase.Began && currentTouchState == TouchState.NoTouch) {
 					// Can we start a touch sequence
-					if (tile.CommenceTouch()) {
+					TouchableTile.TileType touchedType;
+					if (tile.CommenceTouch(out touchedType)) {
 						currentTouchState = TouchState.PathStarted;
+						pathTileType = touchedType;
 						touchedTiles.Clear();
 						touchedTiles.Add(tile);
 						tile.UpdateOutline(true);
-//						tile.OnTouch();
 					} 
 				} else if (myTouch.phase == TouchPhase.Moved && currentTouchState == TouchState.PathStarted) {
 					if (tile.AbortTouch()) { 
 						// stop the line here
-						foreach (TouchableTile touchedTile in touchedTiles) { 
-							touchedTile.UpdateOutline(false);
-						}
-						touchedTiles.Clear();
-						currentTouchState = TouchState.NoTouch;
+						AbortPath();
 					} else {
 						// We're drawing a line
 						touchedTiles.Add(tile);
 						tile.UpdateOutline(true);
 					}
 				} else if (myTouch.phase == TouchPhase.Ended && currentTouchState == TouchState.PathStarted) { 
-					if (tile.FinishTouch()) {
-						// This completes the sequence
-						foreach (TouchableTile degradeTile in touchedTiles) {
-							degradeTile.OnTouch();
-							degradeTile.UpdateOutline(false);
+					TouchableTile.TileType endTouchType;
+
+					if (tile.CanFinishTouch(out endTouchType)) {
+						if (endTouchType == pathTileType) {
+							// This completes the sequence
+							foreach (TouchableTile degradeTile in touchedTiles) {
+								degradeTile.OnTouch();
+								degradeTile.UpdateOutline(false);
+							}
+							touchedTiles.Clear();
+							currentTouchState = TouchState.NoTouch; 
+						} else {
+							// Abort the path
+							AbortPath();
 						}
-						touchedTiles.Clear();
-						currentTouchState = TouchState.NoTouch;
 					}
 				}
 
@@ -261,6 +268,15 @@ public class BoardManager : MonoBehaviour {
 
 
 		#endif		
+	}
+
+	private void AbortPath() {
+		// stop the line here
+		foreach (TouchableTile touchedTile in touchedTiles) { 
+			touchedTile.UpdateOutline(false);
+		}
+		touchedTiles.Clear();
+		currentTouchState = TouchState.NoTouch;
 	}
 
 	public void EndLevel() {

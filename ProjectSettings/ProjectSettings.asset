@@ -85,6 +85,7 @@ PlayerSettings:
   xboxEnableFitness: 0
   visibleInBackground: 0
   allowFullscreenSwitch: 1
+  graphicsJobMode: 0
   macFullscreenMode: 2
   d3d9FullscreenMode: 1
   d3d11FullscreenMode: 1
@@ -419,7 +420,7 @@ PlayerSettings:
   tizenMicrophonePermissions: 0
   tizenDeploymentTarget: 
   tizenDeploymentTargetType: 0
-  tizenMinOSVersion: 0
+  tizenMinOSVersion: 1
   n3dsUseExtSaveData: 0
   n3dsCompressStaticMem: 1
   n3dsExtSaveDataNumber: 0x12345
@@ -466,7 +467,7 @@ PlayerSettings:
     ErrorHub: 0
     Hub: 0
     UNet: 1
-  cloudProjectId: 57ac5984-e7f9-41bb-a8f0-dd9ae2e078cf
-  projectName: GridWalk
-  organizationId: paulatdylandogster
+  cloudProjectId: 92ac3dba-dbf7-4273-bbcd-a84c5dee9d08
+  projectName: GridWalkGit
+  organizationId: paulgriffiths
   cloudEnabled: 0

@@ -856,7 +856,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -563, y: 65}
+  m_AnchoredPosition: {x: -397, y: 67}
   m_SizeDelta: {x: 202, y: 249}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &605856973
@@ -1479,7 +1479,8 @@ Prefab:
       propertyPath: mainSceneName
       value: Main Scene
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114513508233535224, guid: 469f375107c8a46a8b2c36b9eb960c40, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 469f375107c8a46a8b2c36b9eb960c40, type: 2}
   m_IsPrefabParent: 0
 --- !u!114 &1655176105 stripped
@@ -1683,7 +1684,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 214, y: 25}
+  m_AnchoredPosition: {x: 214, y: 23}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1756329146
@@ -1742,7 +1743,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1863169603

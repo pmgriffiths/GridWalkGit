@@ -9,9 +9,9 @@ public class Loader : MonoBehaviour {
 
 	// Called when we wake up ? 
 	void Awake () {
-		if (GameManager.instance == null) {
-			Instantiate(gameManager);	
-		}
+//		if (GameManager.instance == null) {
+//			Instantiate(gameManager);	
+//		}
 	}
 
 }

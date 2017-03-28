@@ -4,6 +4,7 @@ using System;
 using Random = UnityEngine.Random;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BoardManager : MonoBehaviour {
 
@@ -20,15 +21,23 @@ public class BoardManager : MonoBehaviour {
 		}
 	}
 
+	private CameraControl cameraControlScript;
+
 	// Debug output text
 	private Text boardPositionText;
 	private Text touchPhaseText;
 	private Text touchPositionText;
 	private Text touchTargetText;
 
+	// time to display level text
+	public float levelStartDelay = 2f;
+
+	private Text levelText;
+
 	// Public Variables
-	private int columns = 8;
-	private int rows = 8;
+	private int columns;
+	private int rows;
+	private int level;
 
 	public TouchableTile[] floorTiles;
 	public TouchableTile[] outerWallTiles;
@@ -55,6 +64,23 @@ public class BoardManager : MonoBehaviour {
 	// Are we looking for input
 	private bool enableInput = false;
 
+	// Reference to cover image
+	private GameObject levelImage;
+
+	public void Awake() {
+		Debug.Log ("BoardManager is awake");
+
+		// Get reference to Camera Control
+		cameraControlScript = GetComponent<CameraControl>();
+
+		// take our state from the game state
+		rows = GameState.Instance.rows;
+		columns = GameState.Instance.columns;
+		level = ++GameState.Instance.level;
+
+		InitGame ();
+	}
+
 	// Clears the list of grid positions
 	private void IntialiseList() 
 	{ 
@@ -74,6 +100,22 @@ public class BoardManager : MonoBehaviour {
 			}
 		}
 	}
+
+	// Initialise the game board 
+	void InitGame() {
+
+		levelImage = GameObject.Find("LevelImage");
+		GameObject levelTextObj = GameObject.Find ("LevelText");
+		Debug.Log ("Level text obj is " + levelTextObj);
+		levelText = GameObject.Find("LevelText").GetComponent<Text>();
+		levelText.text = "Level "+ level;
+		levelImage.SetActive(true);
+		Invoke("HideLevelImage", levelStartDelay);
+
+		SetupScene(level, rows, columns);
+		EnableInput(true);
+		cameraControlScript.EnableControls(true);
+	} 
 
 	// Sets up the board
 	void BoardSetup() 
@@ -123,6 +165,7 @@ public class BoardManager : MonoBehaviour {
 		IntialiseList();
 		BoardSetup();
 
+
 		GetDebugTextReferences();
 	}
 		
@@ -154,6 +197,12 @@ public class BoardManager : MonoBehaviour {
 	// Are we looking for player input ? 
 	public void EnableInput(bool enableInput) {
 		this.enableInput = enableInput;
+	}
+
+
+	// Method for removing splash image
+	private void HideLevelImage() {
+		levelImage.SetActive(false);
 	}
 
 
@@ -214,6 +263,7 @@ public class BoardManager : MonoBehaviour {
 
 	public void EndLevel() {
 		Debug.Log("BoardManager endLevel");
+		SceneManager.LoadScene("MenuScene", LoadSceneMode.Single);
 	}
 
 }

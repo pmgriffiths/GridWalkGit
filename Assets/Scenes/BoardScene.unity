@@ -709,7 +709,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5113636}
-  m_AnchoredPosition: {x: -615, y: 140}
+  m_AnchoredPosition: {x: -409, y: 140}
   m_SizeDelta: {x: 100, y: 91}
   m_Pivot: {x: 0.64431626, y: 0.42128173}
 --- !u!114 &1607815470
@@ -859,7 +859,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -606, y: -74}
+  m_AnchoredPosition: {x: -394, y: -74}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1736537756
@@ -901,8 +901,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114618539869218554, guid: 469f375107c8a46a8b2c36b9eb960c40,
-          type: 2}
+      - m_Target: {fileID: 1835901275}
         m_MethodName: EndLevel
         m_Mode: 1
         m_Arguments:
@@ -948,6 +947,92 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1736537754}
+--- !u!1001 &1835901272
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 114067392560059688, guid: d4ab5150bae174f5688d447e3ee8bdc0,
+        type: 2}
+      propertyPath: floorTiles.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063140719355194, guid: d4ab5150bae174f5688d447e3ee8bdc0, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 918.0521
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063140719355194, guid: d4ab5150bae174f5688d447e3ee8bdc0, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 360.40775
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063140719355194, guid: d4ab5150bae174f5688d447e3ee8bdc0, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063140719355194, guid: d4ab5150bae174f5688d447e3ee8bdc0, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063140719355194, guid: d4ab5150bae174f5688d447e3ee8bdc0, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063140719355194, guid: d4ab5150bae174f5688d447e3ee8bdc0, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063140719355194, guid: d4ab5150bae174f5688d447e3ee8bdc0, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063140719355194, guid: d4ab5150bae174f5688d447e3ee8bdc0, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114067392560059688, guid: d4ab5150bae174f5688d447e3ee8bdc0,
+        type: 2}
+      propertyPath: floorTiles.Array.data[0]
+      value: 
+      objectReference: {fileID: 114875058376902474, guid: cd37ea747ce194a10b6a919309ad5e25,
+        type: 2}
+    - target: {fileID: 114067392560059688, guid: d4ab5150bae174f5688d447e3ee8bdc0,
+        type: 2}
+      propertyPath: outerWallTiles.Array.data[0]
+      value: 
+      objectReference: {fileID: 114601614492652008, guid: 1bb048555e89c40b891b294f4d207ca9,
+        type: 2}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d4ab5150bae174f5688d447e3ee8bdc0, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1 &1835901273 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1966171482923254, guid: d4ab5150bae174f5688d447e3ee8bdc0,
+    type: 2}
+  m_PrefabInternal: {fileID: 1835901272}
+--- !u!114 &1835901274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1835901273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621d69ec3f09c4e59a707b99da1078a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0.1
+  MINSCALE: 2
+  MAXSCALE: 5
+  varianceInDistances: 5
+  minPinchSpeed: 5
+--- !u!114 &1835901275 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114067392560059688, guid: d4ab5150bae174f5688d447e3ee8bdc0,
+    type: 2}
+  m_PrefabInternal: {fileID: 1835901272}
+  m_Script: {fileID: 11500000, guid: 4d2e8b25bbcec429ba00e80433ebbbf0, type: 3}
 --- !u!1 &1860220279
 GameObject:
   m_ObjectHideFlags: 0

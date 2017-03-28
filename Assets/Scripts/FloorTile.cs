@@ -21,8 +21,8 @@ public class FloorTile : TouchableTile {
 	void Awake () {
 //		Debug.Log("FloorTile : awake");
 		spriteRenderer = GetComponent<SpriteRenderer>();
-		hitPoints = floorSprites.Length;
-		spriteRenderer.sprite = floorSprites[hitPoints - 1];
+		hitPoints = floorSprites.Length - 1;
+		spriteRenderer.sprite = floorSprites[hitPoints];
 	}
 	
 	public void degradeFloor() {

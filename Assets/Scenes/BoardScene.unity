@@ -1003,6 +1003,12 @@ Prefab:
       value: 
       objectReference: {fileID: 114601614492652008, guid: 1bb048555e89c40b891b294f4d207ca9,
         type: 2}
+    - target: {fileID: 114067392560059688, guid: d4ab5150bae174f5688d447e3ee8bdc0,
+        type: 2}
+      propertyPath: boardSoundManager
+      value: 
+      objectReference: {fileID: 114558562992827330, guid: 2f20967870a36495f8d63d7a88a658bd,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d4ab5150bae174f5688d447e3ee8bdc0, type: 2}
   m_IsPrefabParent: 0

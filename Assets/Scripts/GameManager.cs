@@ -17,8 +17,6 @@ public class GameManager : MonoBehaviour {
 	// Ensure we're a singleton
 //	public static GameManager instance = null;
 
-	private int level = 1;
-		
 
 	// Use this for initialization
 	void Awake () {

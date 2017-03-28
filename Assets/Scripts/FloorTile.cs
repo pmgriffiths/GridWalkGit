@@ -128,6 +128,10 @@ public class FloorTile : TouchableTile {
 		return false;
 	}
 
+	public override bool AbortTouch() { 
+		return hitPoints == 0;
+	}
+
 
 	override public void UpdateOutline(bool showOutline) {
 		MaterialPropertyBlock mpb = new MaterialPropertyBlock();

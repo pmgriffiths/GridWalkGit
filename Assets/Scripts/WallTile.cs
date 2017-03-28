@@ -33,6 +33,10 @@ public class WallTile : TouchableTile {
 		return true;
 	}
 
+	// Do we abort a touch sequence
+	public override bool AbortTouch() {
+		return false;
+	}
 
 	override public void UpdateOutline(bool showOutline) {
 		MaterialPropertyBlock mpb = new MaterialPropertyBlock();

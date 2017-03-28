@@ -13,6 +13,9 @@ public abstract class TouchableTile : MonoBehaviour {
 	// Does this tile finish a touch sequence
 	public abstract bool FinishTouch();
 
+	// Does this tile interupt a touch sequence ? 
+	public abstract bool AbortTouch (); 
+
 	// Show/hide an outline
 	public abstract void UpdateOutline(bool showOutline);
 }

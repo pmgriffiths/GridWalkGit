@@ -61,9 +61,6 @@ public class BoardManager : MonoBehaviour {
 	// Sequence of touched tiles
 	private HashSet<TouchableTile> touchedTiles = new HashSet<TouchableTile>();
 
-	// Are we looking for input
-	private bool enableInput = false;
-
 	// Reference to cover image
 	private GameObject levelImage;
 
@@ -113,7 +110,6 @@ public class BoardManager : MonoBehaviour {
 		Invoke("HideLevelImage", levelStartDelay);
 
 		SetupScene(level, rows, columns);
-		EnableInput(true);
 		cameraControlScript.EnableControls(true);
 	} 
 
@@ -193,12 +189,7 @@ public class BoardManager : MonoBehaviour {
 
 		return haveTile;
 	}
-
-	// Are we looking for player input ? 
-	public void EnableInput(bool enableInput) {
-		this.enableInput = enableInput;
-	}
-
+		
 
 	// Method for removing splash image
 	private void HideLevelImage() {
@@ -209,51 +200,62 @@ public class BoardManager : MonoBehaviour {
 	private void Update() {
 
 		#if UNITY_IOS 
-		if (enableInput) {
-			if (Input.touchCount > 0) {
-				Touch myTouch = Input.touches[0];
-				TouchableTile tile;
-				bool foundTile = CheckForTile(myTouch, out tile);
+		if (Input.touchCount > 0) {
+			Touch myTouch = Input.touches[0];
+			TouchableTile tile;
+			bool foundTile = CheckForTile(myTouch, out tile);
 
-				touchPhaseText.text = "Touch Phase: " + myTouch.phase.ToString();
+			touchPhaseText.text = "Touch Phase: " + myTouch.phase.ToString();
 
-				// Need a wall tile at start of touch
-				if (foundTile) {
+			// Need a wall tile at start of touch
+			if (foundTile) {
 
-					if (myTouch.phase == TouchPhase.Began && currentTouchState == TouchState.NoTouch) {
-						// Can we start a touch sequence
-						if (tile.CommenceTouch()) {
-							currentTouchState = TouchState.PathStarted;
-							touchedTiles.Clear();
-							touchedTiles.Add(tile);
-							tile.UpdateOutline(true);
-	//						tile.OnTouch();
-						} 
-					} else if ((myTouch.phase == TouchPhase.Moved || myTouch.phase == TouchPhase.Ended) && currentTouchState == TouchState.PathStarted) {
+				if (myTouch.phase == TouchPhase.Began && currentTouchState == TouchState.NoTouch) {
+					// Can we start a touch sequence
+					if (tile.CommenceTouch()) {
+						currentTouchState = TouchState.PathStarted;
+						touchedTiles.Clear();
+						touchedTiles.Add(tile);
+						tile.UpdateOutline(true);
+//						tile.OnTouch();
+					} 
+				} else if (myTouch.phase == TouchPhase.Moved && currentTouchState == TouchState.PathStarted) {
+					if (tile.AbortTouch()) { 
+						// stop the line here
+						foreach (TouchableTile touchedTile in touchedTiles) { 
+							touchedTile.UpdateOutline(false);
+						}
+						touchedTiles.Clear();
+						currentTouchState = TouchState.NoTouch;
+					} else {
 						// We're drawing a line
 						touchedTiles.Add(tile);
 						tile.UpdateOutline(true);
-						if (tile.FinishTouch()) {
-							// This completes the sequence
-							foreach (TouchableTile degradeTile in touchedTiles) {
-								degradeTile.OnTouch();
-								degradeTile.UpdateOutline(false);
-							}
-							touchedTiles.Clear();
+					}
+				} else if (myTouch.phase == TouchPhase.Ended && currentTouchState == TouchState.PathStarted) { 
+					if (tile.FinishTouch()) {
+						// This completes the sequence
+						foreach (TouchableTile degradeTile in touchedTiles) {
+							degradeTile.OnTouch();
+							degradeTile.UpdateOutline(false);
 						}
-					} 
-					boardPositionText.text = currentTouchState.ToString();
-										
-							
-	/**				if (myTouch.phase == TouchPhase.Ended && foundTile) 
-					{
-							touchPositionText.text = "Got it";	
-							tile.OnTouch();
-						} else {
-							touchPositionText.text = "No tiles at position";
-					} */
-
+						touchedTiles.Clear();
+						currentTouchState = TouchState.NoTouch;
+					}
 				}
+
+
+				boardPositionText.text = currentTouchState.ToString();
+									
+						
+/**				if (myTouch.phase == TouchPhase.Ended && foundTile) 
+				{
+						touchPositionText.text = "Got it";	
+						tile.OnTouch();
+					} else {
+						touchPositionText.text = "No tiles at position";
+				} */
+
 			}
 		}
 

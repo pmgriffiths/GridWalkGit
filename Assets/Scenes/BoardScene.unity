@@ -709,7 +709,11 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5113636}
+<<<<<<< Updated upstream:Assets/Scenes/BoardScene.unity
   m_AnchoredPosition: {x: -409, y: 140}
+=======
+  m_AnchoredPosition: {x: -474, y: 142}
+>>>>>>> Stashed changes:Assets/Scenes/Main Scene.unity
   m_SizeDelta: {x: 100, y: 91}
   m_Pivot: {x: 0.64431626, y: 0.42128173}
 --- !u!114 &1607815470
@@ -859,7 +863,11 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
+<<<<<<< Updated upstream:Assets/Scenes/BoardScene.unity
   m_AnchoredPosition: {x: -394, y: -74}
+=======
+  m_AnchoredPosition: {x: -465, y: -72}
+>>>>>>> Stashed changes:Assets/Scenes/Main Scene.unity
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1736537756

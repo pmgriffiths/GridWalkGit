@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour {
 	private Slider rowSlider;
 	private Slider columnSlider;
 
+	private Toggle efxToggle;
+	private Toggle musicToggle;
+
 	// Use this for initialization
 	void Awake () {
 		InitialGameState initialGameState = GetComponent<InitialGameState> ();
@@ -25,6 +28,9 @@ public class GameManager : MonoBehaviour {
 		columnText = GameObject.Find("ColumnText").GetComponent<Text>();
 		rowSlider = GameObject.Find("RowSlider").GetComponent<Slider>();
 		columnSlider = GameObject.Find("ColumnSlider").GetComponent<Slider>();
+
+		efxToggle = GameObject.Find ("EfxToggle").GetComponent<Toggle> ();
+		musicToggle = GameObject.Find ("MusicToggle").GetComponent<Toggle> ();
 	
 		InitMenu();
 	}
@@ -39,6 +45,10 @@ public class GameManager : MonoBehaviour {
 		columnSlider.onValueChanged.AddListener (delegate {	ColumnValueChanged (); });
 		rowSlider.onValueChanged.RemoveAllListeners ();
 		rowSlider.onValueChanged.AddListener (delegate { RowValueChanged ();});
+
+		// Set the sound state
+		efxToggle.isOn = GameState.Instance.soundManager.efxEnabled;
+		musicToggle.isOn = GameState.Instance.soundManager.musicEnabled;
 
 		UpdateRowsAndColumns();
 	}
@@ -70,5 +80,13 @@ public class GameManager : MonoBehaviour {
 		columnText.text = GameState.Instance.columns.ToString();
 		columnSlider.value = GameState.Instance.columns;
 
+	}
+
+	public void EnableSoundEffects(bool enabled) {
+		GameState.Instance.soundManager.EnableEfx (enabled);
+	}
+
+	public void EnableMusic(bool enabled) {
+		GameState.Instance.soundManager.EnableMusic (enabled);
 	}
 }

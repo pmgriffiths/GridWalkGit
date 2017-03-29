@@ -17,38 +17,42 @@ public class SoundManager : MonoBehaviour
 	public AudioClip pathAbort;
 	public AudioClip pathSuccess;
 
-	public void PlayPathStart(){
-		efxSource.clip = pathStart;
-		efxSource.Play ();
-		Debug.Log ("efxSource is enabled: " + efxSource.enabled);
-		Debug.Log ("efxSource clip  " + efxSource.clip.ToString() + " is playable " + efxSource.clip.loadState.ToString());
+	public bool efxEnabled = true;
+
+	public bool musicEnabled = false;
+
+	public void EnableEfx(bool enabled) {
+		Debug.Log ("Enable EFX: " + enabled);
+		efxEnabled = enabled;
+	}
+
+	public void EnableMusic(bool enabled) {
+		musicEnabled = enabled;
+	}
+
+	public void PlayPathStart() {
+		PlayEfxClip(pathStart);
 	}
 
 	public void PlayPathExtend(){
-		Debug.Log ("efxSource is enabled: " + efxSource.enabled);
-		efxSource.clip = pathExtend;
-		Debug.Log ("efxSource clip  " + efxSource.clip);
-		efxSource.Play ();
+		PlayEfxClip(pathExtend);
 	}
 
 	public void PlayPathAbort(){
-		Debug.Log ("efxSource is enabled: " + efxSource.enabled);
-		Debug.Log ("efxSource clip  " + efxSource.clip);
-		efxSource.clip = pathAbort;
-		efxSource.Play ();
+		PlayEfxClip(pathAbort);
 	}
 
 	public void PlayPathSuccess(){
-		efxSource.clip = pathSuccess;
-		efxSource.enabled = true;
-//		Debug.Break ();
-
-		Debug.Log ("efxSource is enabled: " + efxSource.enabled);
-		Debug.Log ("efxSource clip  " + efxSource.clip.ToString() + " is playable " + efxSource.clip.loadState.ToString());
-		efxSource.PlayOneShot (pathSuccess);
-		efxSource.Play ();
+		PlayEfxClip(pathSuccess);
 	}
 
+	private void PlayEfxClip(AudioClip clip) {
+		if (efxEnabled) {
+			efxSource.clip = clip;
+			efxSource.Play ();
+		}
+	}
+	
 	void Awake() { 
 		Debug.Log ("efxSource is enabled: " + efxSource.enabled);
 	}

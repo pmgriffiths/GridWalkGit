@@ -110,7 +110,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -190,7 +190,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2667a0a008b044e218b63df62e2be749, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -273,6 +273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   efxSource: {fileID: 82748947058521294}
   musicSource: {fileID: 82210403973719600}
+  audioMixer: {fileID: 0}
   lowPitchRange: 0.95
   highPitchRange: 1.05
   pathStart: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}

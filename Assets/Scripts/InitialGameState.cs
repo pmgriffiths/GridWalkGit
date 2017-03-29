@@ -9,9 +9,12 @@ public class InitialGameState : MonoBehaviour {
 	 * to initialise variables from prefabs without resource loads
 	 */
 
-		public int initialRows;
+	public int initialRows;
 
-		public int initialColumns;
+	public int initialColumns;
 
-		public SoundManager intialSoundManager;
+	public SoundManager intialSoundManager;
+
+	void Awake() {
+	}
 }

@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour 
 {
 	public AudioSource efxSource;					//Drag a reference to the audio source which will play the sound effects.
 	public AudioSource musicSource;					//Drag a reference to the audio source which will play the music.
+
+	public AudioMixer audioMixer;					// Mixes the sounds for playback
+
 	public float lowPitchRange = .95f;				//The lowest a sound effect will be randomly pitched.
 	public float highPitchRange = 1.05f;			//The highest a sound effect will be randomly pitched.
 
@@ -16,21 +20,37 @@ public class SoundManager : MonoBehaviour
 	public void PlayPathStart(){
 		efxSource.clip = pathStart;
 		efxSource.Play ();
+		Debug.Log ("efxSource is enabled: " + efxSource.enabled);
+		Debug.Log ("efxSource clip  " + efxSource.clip.ToString() + " is playable " + efxSource.clip.loadState.ToString());
 	}
 
 	public void PlayPathExtend(){
+		Debug.Log ("efxSource is enabled: " + efxSource.enabled);
 		efxSource.clip = pathExtend;
+		Debug.Log ("efxSource clip  " + efxSource.clip);
 		efxSource.Play ();
 	}
 
 	public void PlayPathAbort(){
+		Debug.Log ("efxSource is enabled: " + efxSource.enabled);
+		Debug.Log ("efxSource clip  " + efxSource.clip);
 		efxSource.clip = pathAbort;
 		efxSource.Play ();
 	}
 
 	public void PlayPathSuccess(){
 		efxSource.clip = pathSuccess;
+		efxSource.enabled = true;
+//		Debug.Break ();
+
+		Debug.Log ("efxSource is enabled: " + efxSource.enabled);
+		Debug.Log ("efxSource clip  " + efxSource.clip.ToString() + " is playable " + efxSource.clip.loadState.ToString());
+		efxSource.PlayOneShot (pathSuccess);
 		efxSource.Play ();
+	}
+
+	void Awake() { 
+		Debug.Log ("efxSource is enabled: " + efxSource.enabled);
 	}
 
 

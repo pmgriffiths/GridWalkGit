@@ -67,8 +67,6 @@ public class BoardManager : MonoBehaviour {
 	// Tile type of path being drawn
 	TouchableTile.TileType pathTileType;
 
-	public SoundManager boardSoundManager;
-
 	public void Awake() {
 		Debug.Log ("BoardManager is awake");
 
@@ -224,7 +222,7 @@ public class BoardManager : MonoBehaviour {
 						touchedTiles.Clear();
 						touchedTiles.Add(tile);
 						tile.UpdateOutline(true);
-						boardSoundManager.PlayPathStart();
+						GameState.Instance.soundManager.PlayPathStart();
 					} 
 				} else if (myTouch.phase == TouchPhase.Moved && currentTouchState == TouchState.PathStarted) {
 					if (tile.AbortTouch()) { 
@@ -234,7 +232,7 @@ public class BoardManager : MonoBehaviour {
 						// We're drawing a line
 						touchedTiles.Add(tile);
 						tile.UpdateOutline(true);
-						boardSoundManager.PlayPathExtend();
+						GameState.Instance.soundManager.PlayPathExtend();
 					}
 				} else if (myTouch.phase == TouchPhase.Ended && currentTouchState == TouchState.PathStarted) { 
 					TouchableTile.TileType endTouchType;
@@ -248,7 +246,7 @@ public class BoardManager : MonoBehaviour {
 							}
 							touchedTiles.Clear();
 							currentTouchState = TouchState.NoTouch; 
-							boardSoundManager.PlayPathSuccess();
+							GameState.Instance.soundManager.PlayPathSuccess();
 						} else {
 							// Abort the path
 							AbortPath();
@@ -282,7 +280,7 @@ public class BoardManager : MonoBehaviour {
 		}
 		touchedTiles.Clear();
 		currentTouchState = TouchState.NoTouch;
-		boardSoundManager.PlayPathAbort();;
+		GameState.Instance.soundManager.PlayPathAbort();;
 	}
 
 	public void EndLevel() {

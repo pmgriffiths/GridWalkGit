@@ -4,22 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+
 public class GameManager : MonoBehaviour {
 
 	// Row + Column display text
-	private Text rowText;
+	public Text rowText;
 	private Text columnText;
 
 	// Row + Column sliders
 	private Slider rowSlider;
 	private Slider columnSlider;
 
-	// Ensure we're a singleton
-//	public static GameManager instance = null;
-
-
 	// Use this for initialization
 	void Awake () {
+		InitialGameState initialGameState = GetComponent<InitialGameState> ();
+		GameState.Instance.Initialise (initialGameState);
+
 		Debug.Log("Getting rows + columns");
 		rowText = GameObject.Find("RowText").GetComponent<Text>();
 		columnText = GameObject.Find("ColumnText").GetComponent<Text>();

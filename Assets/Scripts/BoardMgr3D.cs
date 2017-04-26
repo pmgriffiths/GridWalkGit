@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class BoardManager : MonoBehaviour {
+public class BoardMgr3D : MonoBehaviour {
 
 	[Serializable]
 	public class Count
@@ -20,8 +20,6 @@ public class BoardManager : MonoBehaviour {
 			maximum = max;
 		}
 	}
-
-	private CameraControl cameraControlScript;
 
 	// Debug output text
 	private Text boardPositionText;
@@ -70,9 +68,6 @@ public class BoardManager : MonoBehaviour {
 	public void Awake() {
 		Debug.Log ("BoardManager is awake");
 
-		// Get reference to Camera Control
-		cameraControlScript = GetComponent<CameraControl>();
-
 		// take our state from the game state
 		rows = GameState.Instance.rows;
 		columns = GameState.Instance.columns;
@@ -113,7 +108,7 @@ public class BoardManager : MonoBehaviour {
 		Invoke("HideLevelImage", levelStartDelay);
 
 		SetupScene(level, rows, columns);
-		cameraControlScript.EnableControls(true);
+//		cameraControlScript.EnableControls(true);
 	} 
 
 	// Sets up the board
@@ -135,7 +130,7 @@ public class BoardManager : MonoBehaviour {
 				}
 
 				// Quaternion.identity means no rotation
-				Vector3 objectTransform = new Vector3(x, y, 0f);
+				Vector3 objectTransform = new Vector3(x, 0f, y);
 				TouchableTile tileInstance = Instantiate(toInstantiate, objectTransform, Quaternion.identity);
 				tileInstance.transform.SetParent(boardHolder);
 
@@ -143,7 +138,7 @@ public class BoardManager : MonoBehaviour {
 				tilePositions.Add(objectTransform, tileInstance);
 
 			}
-				
+
 		} 
 
 	}
@@ -167,7 +162,7 @@ public class BoardManager : MonoBehaviour {
 
 		GetDebugTextReferences();
 	}
-		
+
 	private bool CheckForTile(Touch touch, out TouchableTile tile) {
 		bool haveTile = false;
 		tile = null;
@@ -192,7 +187,7 @@ public class BoardManager : MonoBehaviour {
 
 		return haveTile;
 	}
-		
+
 
 	// Method for removing splash image
 	private void HideLevelImage() {
@@ -256,9 +251,9 @@ public class BoardManager : MonoBehaviour {
 
 
 				boardPositionText.text = currentTouchState.ToString();
-									
-						
-/**				if (myTouch.phase == TouchPhase.Ended && foundTile) 
+
+
+				/**				if (myTouch.phase == TouchPhase.Ended && foundTile) 
 				{
 						touchPositionText.text = "Got it";	
 						tile.OnTouch();

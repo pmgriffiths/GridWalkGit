@@ -2,45 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FloorTile : TouchableTile {
+public class Floor3D : TouchableTile {
 
-	// Sequence of sprites for degrading floor
-	public Sprite[] floorSprites;
-
-	// Sprite for empty floor tile
-	public Sprite brokenFloor;
-
-	private SpriteRenderer spriteRenderer;
-
-	private int hitPoints;
+	public int hitPoints;
 
 	// Outine color
 	public Color color = Color.white;
 
 	// Called once before game starts
 	void Awake () {
-//		Debug.Log("FloorTile : awake");
-		spriteRenderer = GetComponent<SpriteRenderer>();
-		hitPoints = floorSprites.Length - 1;
-		spriteRenderer.sprite = floorSprites[hitPoints];
 	}
-	
+
 	public void degradeFloor() {
 		Debug.Log("DegradeFloor: " + hitPoints);
- 		hitPoints--;
+		hitPoints--;
 		if (hitPoints > 0) {
-			spriteRenderer.sprite = floorSprites[hitPoints];
+//			spriteRenderer.sprite = floorSprites[hitPoints];
 		} else {
 			// Floor is broken
 			//gameObject.SetActive(false);
-			spriteRenderer.sprite = brokenFloor;
+//			spriteRenderer.sprite = brokenFloor;
 		}
 	}
 
 	private void Update()
 	{
 		#if UNITY_IOS 
-/**
+		/**
 		if (Input.touchCount > 0)
 		{
 			Touch myTouch = Input.touches[0];
@@ -134,12 +122,8 @@ public class FloorTile : TouchableTile {
 		return hitPoints == 0;
 	}
 
-
 	override public void Highlight(bool showHighlight) {
-		MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-		spriteRenderer.GetPropertyBlock(mpb);
-		mpb.SetFloat("_Outline", showHighlight ? 1f : 0);
-		mpb.SetColor("_OutlineColor", color);
-		spriteRenderer.SetPropertyBlock(mpb);
 	}
+
+
 }

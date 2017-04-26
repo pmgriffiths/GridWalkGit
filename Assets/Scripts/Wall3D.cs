@@ -3,26 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class WallTile : TouchableTile {
-
-	private SpriteRenderer spriteRenderer;
-
-	// Outine color
-	public Color color = Color.white;
-
-	// Wall Tile Types
-	public Sprite[] wallTiles; 
+public class Wall3D : TouchableTile {
 
 	// What type are we
-	private TouchableTile.TileType tileType;
+	private TouchableTile.TileType tileType = TouchableTile.TileType.Wall_0;
 
 	// Called once before game starts
 	void Awake () {
-		//		Debug.Log("FloorTile : awake");
-		spriteRenderer = GetComponent<SpriteRenderer>();
-		int ourType = Random.Range (0, wallTiles.Length);
-		tileType = (TileType)ourType;
-		spriteRenderer.sprite = wallTiles[ourType];
 	}
 
 	// What we do if we're touched
@@ -52,10 +39,6 @@ public class WallTile : TouchableTile {
 	}
 
 	override public void Highlight(bool showHighlight) {
-		MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-		spriteRenderer.GetPropertyBlock(mpb);
-		mpb.SetFloat("_Outline", showHighlight ? 1f : 0);
-		mpb.SetColor("_OutlineColor", color);
-		spriteRenderer.SetPropertyBlock(mpb);
 	}
+
 }

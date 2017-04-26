@@ -62,6 +62,12 @@ public class GameManager : MonoBehaviour {
 
 	}
 
+
+	public void Start3dLevel() { 
+		Debug.Log("Gamemanager starting 3d scene");
+		SceneManager.LoadScene("Board3D", LoadSceneMode.Single);
+	}
+
 	public void RowValueChanged() {
 		GameState.Instance.rows = (int)rowSlider.value;
 		UpdateRowsAndColumns();

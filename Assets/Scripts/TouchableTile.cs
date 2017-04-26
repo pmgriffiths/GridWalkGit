@@ -19,5 +19,5 @@ public abstract class TouchableTile : MonoBehaviour {
 	public abstract bool AbortTouch (); 
 
 	// Show/hide an outline
-	public abstract void UpdateOutline(bool showOutline);
+	public abstract void Highlight(bool highlight);
 }

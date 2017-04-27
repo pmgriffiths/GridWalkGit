@@ -168,16 +168,15 @@ public class BoardMgr3D : MonoBehaviour {
 		GetDebugTextReferences();
 	}
 
-	private bool CheckForTile(Touch touch, out TouchableTile tile) {
+	private bool CheckForTile(Vector2 touchPoint, out TouchableTile tile) {
 		bool haveTile = false;
 		tile = null;
 
-		touchOrigin = touch.position;
-		touchPositionText.text = "Touch position: " + touchOrigin.x + ", " + touchOrigin.y;
+		touchPositionText.text = "Touch position: " + touchPoint.x + ", " + touchPoint.y;
 
-		Vector3 touchPoint = Camera.main.ScreenToWorldPoint(touchOrigin);
+		Vector3 directedTouch = Camera.main.ScreenToWorldPoint(touchPoint);
 
-		Ray hitRay = new Ray(touchPoint, Camera.main.transform.forward);
+		Ray hitRay = new Ray(directedTouch, Camera.main.transform.forward);
 
 //		Ray ray = Camera.main.ScreenPointToRay(touchPoint);
 		RaycastHit hit;
@@ -227,18 +226,50 @@ public class BoardMgr3D : MonoBehaviour {
 
 	private void Update() {
 
-		#if UNITY_IOS 
+		Vector2 touchPoint = new Vector2(0,0);
+		TouchableTile tile;
+
+		bool touchStarted = false;
+		bool touchMoved = false;
+		bool touchEnded = false;
+
+		#if UNITY_IOS
 		if (Input.touchCount > 0) {
 			Touch myTouch = Input.touches[0];
-			TouchableTile tile;
-			bool foundTile = CheckForTile(myTouch, out tile);
 
-			touchPhaseText.text = "Touch Phase: " + myTouch.phase.ToString();
+			switch (myTouch.phase) {
+				case TouchPhase.Began:
+					touchStarted = true;
+					break;
+				case TouchPhase.Moved:
+					touchMoved = true;
+					break;
+				case TouchPhase.Ended:
+					touchEnded = currentTouchState == TouchState.PathStarted;
+					break;
+			}
+			touchPoint = myTouch.position;
+		}
+		#else
+		if (Input.GetMouseButtonDown(0)) {
+			touchStarted = true;
+		} else if (Input.GetMouseButton(0)) {
+			touchMoved = true;
+		} else if (Input.GetMouseButtonUp(0)) {
+			touchEnded = true;
+		}
+		Vector3 mouseClick = Input.mousePosition;
+		touchPoint = new Vector2(mouseClick.x, mouseClick.y);
+		#endif
+			
+		if (touchStarted || touchMoved || touchEnded) {
+			bool foundTile = CheckForTile(touchPoint, out tile);
+			touchPhaseText.text = "Touch start/move/end " + touchStarted + "/" + touchMoved + "/" + touchEnded;
 
 			// Need a wall tile at start of touch
 			if (foundTile) {
 
-				if (myTouch.phase == TouchPhase.Began && currentTouchState == TouchState.NoTouch) {
+				if (touchStarted && currentTouchState == TouchState.NoTouch) {
 					// Can we start a touch sequence
 					TouchableTile.TileType touchedType;
 					if (tile.CommenceTouch(out touchedType)) {
@@ -252,7 +283,7 @@ public class BoardMgr3D : MonoBehaviour {
 
 						GameState.Instance.soundManager.PlayPathStart();
 					} 
-				} else if (myTouch.phase == TouchPhase.Moved && currentTouchState == TouchState.PathStarted) {
+				} else if (touchMoved && currentTouchState == TouchState.PathStarted) {
 					if (tile.AbortTouch()) { 
 						// stop the line here
 						AbortPath();
@@ -262,7 +293,7 @@ public class BoardMgr3D : MonoBehaviour {
 						tile.Highlight(true);
 						GameState.Instance.soundManager.PlayPathExtend();
 					}
-				} else if (myTouch.phase == TouchPhase.Ended && currentTouchState == TouchState.PathStarted) { 
+				} else if (touchEnded && currentTouchState == TouchState.PathStarted) { 
 					TouchableTile.TileType endTouchType;
 
 					if (tile.CanFinishTouch(out endTouchType)) {
@@ -278,27 +309,19 @@ public class BoardMgr3D : MonoBehaviour {
 						} else {
 							// Abort the path
 							AbortPath();
+							currentTouchState = TouchState.NoTouch; 
 						}
 					}
 				}
-
-
-				boardPositionText.text = currentTouchState.ToString();
-
-
-				/**				if (myTouch.phase == TouchPhase.Ended && foundTile) 
-				{
-						touchPositionText.text = "Got it";	
-						tile.OnTouch();
-					} else {
-						touchPositionText.text = "No tiles at position";
-				} */
-
+			} else {
+				AbortPath();
+				currentTouchState = TouchState.NoTouch;
 			}
+
+			boardPositionText.text = currentTouchState.ToString();
+
 		}
-
-
-		#endif		
+		
 	}
 
 	private void AbortPath() {

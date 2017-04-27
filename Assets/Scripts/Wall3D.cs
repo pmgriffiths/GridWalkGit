@@ -39,6 +39,13 @@ public class Wall3D : TouchableTile {
 	}
 
 	override public void Highlight(bool showHighlight) {
+
+		if (showHighlight) {
+			gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+		} else {
+			gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+		}
+			
 	}
 
 }

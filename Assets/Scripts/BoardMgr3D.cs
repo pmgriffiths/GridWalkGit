@@ -141,6 +141,11 @@ public class BoardMgr3D : MonoBehaviour {
 
 		} 
 
+		// Position the camera
+		Camera cam = Camera.main;
+		cam.transform.position = new Vector3(-4, 4,  -4);
+//		cam.transform.rotation. = new Vector3(25f, 0f, 0f);
+
 	}
 
 	void GetDebugTextReferences()
@@ -170,20 +175,39 @@ public class BoardMgr3D : MonoBehaviour {
 		touchOrigin = touch.position;
 		touchPositionText.text = "Touch position: " + touchOrigin.x + ", " + touchOrigin.y;
 
-		Vector3 touchTarget = Camera.main.ScreenToWorldPoint(touchOrigin);
+		Vector3 touchPoint = Camera.main.ScreenToWorldPoint(touchOrigin);
+
+		Ray hitRay = new Ray(touchPoint, Camera.main.transform.forward);
+
+//		Ray ray = Camera.main.ScreenPointToRay(touchPoint);
+		RaycastHit hit;
+
+		if (Physics.Raycast(hitRay, out hit, 100)) {
+			haveTile = false;
+			GameObject hitTile = hit.collider.gameObject;
+			Debug.Log(hitTile.tag);
+
+
+ 		}
+
+	//	Debug.Log("hit Something " + hitSomething);
 
 		// map from world to game position
-		int touchX = (int)Mathf.Round(touchTarget.x);
-		int touchY = (int)Mathf.Round(touchTarget.y);
-		touchTargetText.text = "Touch Target: " + touchX+ ", " + touchY;
+//		int touchX = (int)Mathf.Round(touchTarget.x);
+//		int touchY = (int)Mathf.Round(touchTarget.y);
+//		int touchZ = (int)Mathf.Round(touchTarget.z);
+//		Debug.Log("Touch Target: " + touchX+ ", " + touchY + ", " + touchZ); 
+//		touchTargetText.text = "Touch Target: " + touchX+ ", " + touchY + ", " + touchZ;
+//		touchTargetText.text = "hit Something " + hitSomething;
 
-		// Check for a tile at this position and touch it
-		Vector3 location = new Vector3(touchX, touchY, 0);
 
-		if (tilePositions.TryGetValue(location, out tile)) {
-			touchPositionText.text = "Got it";	
-			haveTile = true;
-		}
+//		// Check for a tile at this position and touch it
+//		Vector3 location = new Vector3(touchX, touchY, 0);
+
+//		if (tilePositions.TryGetValue(location, out tile)) {
+//			touchPositionText.text = "Got it";	
+//			haveTile = true;
+//		}
 
 		return haveTile;
 	}

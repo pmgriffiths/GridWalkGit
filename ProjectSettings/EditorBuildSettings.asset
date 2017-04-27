@@ -18,5 +18,5 @@ EditorBuildSettings:
     path: Assets/Scenes/BoardScene.unity
     guid: 7d3df8cc7d97342c281a5d1e9b5333bb
   - enabled: 1
-    path: Assets/Scenes/3dBoard.unity
+    path: Assets/Scenes/Board3D.unity
     guid: 9bf5ea0c7ae5048a69f1c576a7bf8170

@@ -183,10 +183,15 @@ public class BoardMgr3D : MonoBehaviour {
 		RaycastHit hit;
 
 		if (Physics.Raycast(hitRay, out hit, 100)) {
-			haveTile = false;
+			haveTile = true;
 			GameObject hitTile = hit.collider.gameObject;
-			Debug.Log(hitTile.tag);
 
+			// Look for tile at that location
+			if (tilePositions.TryGetValue(hitTile.transform.position, out tile)) {
+				haveTile = true;
+			} else { 
+				Debug.LogError("Hit something but not known tile: " + hitTile);
+			}
 
  		}
 
@@ -209,6 +214,7 @@ public class BoardMgr3D : MonoBehaviour {
 //			haveTile = true;
 //		}
 
+		Debug.Log("FoundTile: " + haveTile);
 		return haveTile;
 	}
 
@@ -241,6 +247,9 @@ public class BoardMgr3D : MonoBehaviour {
 						touchedTiles.Clear();
 						touchedTiles.Add(tile);
 						tile.Highlight(true);
+						Debug.Log("GS.instance" + GameState.Instance);
+						Debug.Log("GS.instance.soundMgr" + GameState.Instance.soundManager);
+
 						GameState.Instance.soundManager.PlayPathStart();
 					} 
 				} else if (myTouch.phase == TouchPhase.Moved && currentTouchState == TouchState.PathStarted) {

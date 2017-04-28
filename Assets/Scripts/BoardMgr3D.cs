@@ -300,8 +300,7 @@ public class BoardMgr3D : MonoBehaviour {
 						if (endTouchType == pathTileType) {
 							// This completes the sequence
 							foreach (TouchableTile degradeTile in touchedTiles) {
-								degradeTile.OnTouch();
-								degradeTile.Highlight(false);
+								degradeTile.ApplyTouch();
 							}
 							touchedTiles.Clear();
 							currentTouchState = TouchState.NoTouch; 

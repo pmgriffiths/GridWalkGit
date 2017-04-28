@@ -7,7 +7,7 @@ public abstract class TouchableTile : MonoBehaviour {
 	public enum TileType : int { Wall_0 = 0, Wall_1 = 1, Wall_2 = 2, Wall_3 = 3, Floor };
 
 	// This tile has been touched
-	public abstract bool OnTouch ();
+//	public abstract bool OnTouch ();
 
 	// Can this originate a touch sequence
 	public abstract bool CommenceTouch(out TileType type);
@@ -17,6 +17,11 @@ public abstract class TouchableTile : MonoBehaviour {
 
 	// Does this tile interupt a touch sequence ? 
 	public abstract bool AbortTouch (); 
+
+	// Can it extend a sequence ? 
+//	public abstract bool ExtendTouch ();
+
+	public abstract void ApplyTouch(); 
 
 	// Show/hide an outline
 	public abstract void Highlight(bool highlight);

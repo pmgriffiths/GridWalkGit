@@ -16,23 +16,21 @@ public class Floor3D : TouchableTile {
 	public void degradeFloor() {
 		Debug.Log("DegradeFloor: " + hitPoints);
 		hitPoints--;
-		if (hitPoints > 0) {
-//			spriteRenderer.sprite = floorSprites[hitPoints];
+
+		if (hitPoints <= 0) { 
+			SetColour(Color.red);
+			gameObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
 		} else {
-			// Floor is broken
-			//gameObject.SetActive(false);
-//			spriteRenderer.sprite = brokenFloor;
+			Highlight(false);
 		}
 	}
 
 
-
 	// What we do if we're touched
-	public override bool OnTouch() 
+	public override void ApplyTouch() 
 	{
-		Debug.Log("Floor tile touched");	
 		degradeFloor();
-		return true;
 	}
 
 	// Can we start a touch sequence ? 
@@ -47,22 +45,29 @@ public class Floor3D : TouchableTile {
 		return false;
 	}
 
+	// Can we extend a touch sequence, ? 
+//	public override bool CanExtendTouch() {
+//		return hitPoints > 0;
+//	}
+
 	public override bool AbortTouch() { 
 		return hitPoints == 0;
 	}
 
-	override public void Highlight(bool showHighlight) {
-
+	private void SetColour(Color colour) {
 		Renderer renderer = GetComponent<Renderer> ();
 		Material mat = renderer.material;
+		mat.SetColor("_EmissionColor", colour);
+	}
+
+	override public void Highlight(bool showHighlight) {
 
 		if (showHighlight) {
 			gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
-			mat.SetColor ("_EmissionColor", Color.grey);
-
+			SetColour(Color.grey);
 		} else {
 			gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
-			mat.SetColor("_EmissionColor", Color.black);
+			SetColour(Color.black);
 		}
 
 

@@ -111,11 +111,10 @@ public class FloorTile : TouchableTile {
 	}
 
 	// What we do if we're touched
-	public override bool OnTouch() 
+	public override void ApplyTouch() 
 	{
 		Debug.Log("Floor tile touched");	
 		degradeFloor();
-		return true;
 	}
 
 	// Can we start a touch sequence ? 

@@ -13,10 +13,10 @@ public class Wall3D : TouchableTile {
 	}
 
 	// What we do if we're touched
-	public override bool OnTouch() 
+	public override void ApplyTouch() 
 	{
 		Debug.Log("Floor tile touched");	
-		return true;
+		Highlight(false);
 	}
 
 

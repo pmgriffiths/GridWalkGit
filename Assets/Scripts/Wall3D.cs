@@ -39,13 +39,19 @@ public class Wall3D : TouchableTile {
 	}
 
 	override public void Highlight(bool showHighlight) {
+		Renderer renderer = GetComponent<Renderer> ();
+		Material mat = renderer.material;
 
 		if (showHighlight) {
 			gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
+			mat.SetColor ("_EmissionColor", Color.yellow);
+
 		} else {
 			gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+			mat.SetColor("_EmissionColor", Color.black);
 		}
-			
 	}
+
+
 
 }

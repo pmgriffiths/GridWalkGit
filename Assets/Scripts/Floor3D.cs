@@ -6,9 +6,6 @@ public class Floor3D : TouchableTile {
 
 	public int hitPoints;
 
-	// Outine color
-	public Color color = Color.white;
-
 	// Called once before game starts
 	void Awake () {
 	}
@@ -18,14 +15,26 @@ public class Floor3D : TouchableTile {
 		hitPoints--;
 
 		if (hitPoints <= 0) { 
-			SetColour(Color.red);
-			gameObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-
+			// SetColour(Color.red);
+			//gameObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+			StartCoroutine("Fade");
 		} else {
 			Highlight(false);
 		}
 	}
 
+	IEnumerator Fade() {
+		Renderer renderer = GetComponent<Renderer> ();
+
+		SetColour(Color.red);
+		for (float f = 1f; f >= 0; f -= 0.1f) {
+			Color c = renderer.material.color;
+			c.a = f;
+			renderer.material.color = c;
+			gameObject.transform.localScale = new Vector3(f, f, f);
+			yield return new WaitForSeconds(.1f);
+		}
+	}
 
 	// What we do if we're touched
 	public override void ApplyTouch() 
@@ -45,10 +54,6 @@ public class Floor3D : TouchableTile {
 		return false;
 	}
 
-	// Can we extend a touch sequence, ? 
-//	public override bool CanExtendTouch() {
-//		return hitPoints > 0;
-//	}
 
 	public override bool AbortTouch() { 
 		return hitPoints == 0;

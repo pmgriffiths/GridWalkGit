@@ -37,11 +37,10 @@ public class BoardMgr3D : MonoBehaviour {
 	private int rows;
 	private int level;
 
-	public TouchableTile[] floorTiles;
-	public TouchableTile[] outerWallTiles;
-
 	// Keeps hierarchy clean using this as parent of tiles
 	private Transform boardHolder;
+
+	public BoardLayout boardLayout;
 
 	// Tracks objects on the game board and whether there is an object there.
 	private List<Vector3> gridPositions = new List<Vector3>();
@@ -118,33 +117,11 @@ public class BoardMgr3D : MonoBehaviour {
 
 		boardHolder = new GameObject("Board").transform;
 
-
-		// Build the outer wall and floor tiles
-		for (int x = -1; x < columns + 1; x++) {
-			for (int y = -1; y < rows + 1; y++) {
-				TouchableTile toInstantiate = floorTiles[floorTiles.Length - 1];
-				// Check for outer walls
-				if (x == -1 || x == columns || y == -1 || y == rows) {
-					// Replace object with outer wall object
-					toInstantiate = outerWallTiles[Random.Range(0, outerWallTiles.Length)];
-				}
-
-				// Quaternion.identity means no rotation
-				Vector3 objectTransform = new Vector3(x, 0f, y);
-				TouchableTile tileInstance = Instantiate(toInstantiate, objectTransform, Quaternion.identity);
-				tileInstance.transform.SetParent(boardHolder);
-
-				// Store the object in the game dictionary
-				tilePositions.Add(objectTransform, tileInstance);
-
-			}
-
-		} 
+		boardLayout.SetupBoard(boardHolder, rows, columns, tilePositions);
 
 		// Position the camera
 		Camera cam = Camera.main;
 		cam.transform.position = new Vector3(-4, 4,  -4);
-//		cam.transform.rotation. = new Vector3(25f, 0f, 0f);
 
 	}
 

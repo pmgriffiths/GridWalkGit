@@ -14,9 +14,11 @@ public class BoardLayout : MonoBehaviour {
 			for (int y = -1; y < rows + 1; y++) {
 				TouchableTile toInstantiate = floorTiles[floorTiles.Length - 1];
 				// Check for outer walls
+				Debug.Log("OutWalls: " + outerWallTiles.Length);
 				if (x == -1 || x == columns || y == -1 || y == rows) {
 					// Replace object with outer wall object
 					toInstantiate = outerWallTiles[Random.Range(0, outerWallTiles.Length)];
+					Debug.Log("WallType: " + toInstantiate.tileType);
 				}
 
 				// Quaternion.identity means no rotation

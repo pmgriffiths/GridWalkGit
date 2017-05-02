@@ -55,3 +55,4 @@ MonoBehaviour:
   - {fileID: 114957191216721512, guid: ba380e5e1d4934824b436a39d502cae4, type: 2}
   outerWallTiles:
   - {fileID: 114753634544270470, guid: 71122ef5bcff848b691781eb20e491c3, type: 2}
+  - {fileID: 114033929592652766, guid: f906ce9b9e8ce4bc5b12cc35d29d0208, type: 2}

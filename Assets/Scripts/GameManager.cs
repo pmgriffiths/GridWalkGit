@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour {
 		GameState.Instance.Initialise (initialGameState);
 
 		Debug.Log("Getting rows + columns");
-		rowText = GameObject.Find("RowText").GetComponent<Text>();
+//		rowText = GameObject.Find("RowText").GetComponent<Text>();
 		columnText = GameObject.Find("ColumnText").GetComponent<Text>();
 		rowSlider = GameObject.Find("RowSlider").GetComponent<Slider>();
 		columnSlider = GameObject.Find("ColumnSlider").GetComponent<Slider>();

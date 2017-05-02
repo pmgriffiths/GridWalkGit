@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 public class Wall3D : TouchableTile {
 
 	// What type are we
-	private TouchableTile.TileType tileType = TouchableTile.TileType.Wall_0;
+//	public TouchableTile.TileType tileType;
 
 	// Called once before game starts
 	void Awake () {

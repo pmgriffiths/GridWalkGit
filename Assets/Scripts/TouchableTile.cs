@@ -4,7 +4,9 @@ using UnityEngine;
 
 public abstract class TouchableTile : MonoBehaviour {
 
-	public enum TileType : int { Wall_0 = 0, Wall_1 = 1, Wall_2 = 2, Wall_3 = 3, Floor };
+	public enum TileType : int { Wall_0 = 0, Wall_1, Wall_2, Wall_3, Floor_0, Floor_1, Floor_2, Floor_3 };
+
+	public TileType tileType;
 
 	// This tile has been touched
 //	public abstract bool OnTouch ();

@@ -18,6 +18,12 @@ public class GameManager : MonoBehaviour {
 	private Toggle efxToggle;
 	private Toggle musicToggle;
 
+	private Text scoreAText;
+	private Text scoreBText;
+
+	private int scoreA = 0;
+	private int scoreB = 0;
+
 	// Use this for initialization
 	void Awake () {
 		InitialGameState initialGameState = GetComponent<InitialGameState> ();
@@ -31,6 +37,8 @@ public class GameManager : MonoBehaviour {
 
 		efxToggle = GameObject.Find ("EfxToggle").GetComponent<Toggle> ();
 		musicToggle = GameObject.Find ("MusicToggle").GetComponent<Toggle> ();
+
+
 	
 		InitMenu();
 	}

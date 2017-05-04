@@ -37,6 +37,12 @@ public class BoardMgr3D : MonoBehaviour {
 	private int rows;
 	private int level;
 
+	private Text scoreAText;
+	private Text scoreBText;
+	private int scoreA = 0;
+	private int scoreB = 0;
+
+
 	// Keeps hierarchy clean using this as parent of tiles
 	private Transform boardHolder;
 
@@ -72,6 +78,10 @@ public class BoardMgr3D : MonoBehaviour {
 		columns = GameState.Instance.columns;
 		level = ++GameState.Instance.level;
 
+		scoreA = GameState.Instance.scoreA;
+		scoreB = GameState.Instance.scoreB;
+
+
 		InitGame ();
 	}
 
@@ -97,6 +107,7 @@ public class BoardMgr3D : MonoBehaviour {
 
 	// Initialise the game board 
 	void InitGame() {
+		SetupScene(level, rows, columns);
 
 		levelImage = GameObject.Find("LevelImage");
 		GameObject levelTextObj = GameObject.Find ("LevelText");
@@ -106,8 +117,9 @@ public class BoardMgr3D : MonoBehaviour {
 		levelImage.SetActive(true);
 		Invoke("HideLevelImage", levelStartDelay);
 
-		SetupScene(level, rows, columns);
-//		cameraControlScript.EnableControls(true);
+		scoreAText = GameObject.Find("ScoreA").GetComponent<Text>();
+		scoreBText = GameObject.Find("ScoreB").GetComponent<Text>();
+		SetScore();
 	} 
 
 	// Sets up the board
@@ -190,7 +202,7 @@ public class BoardMgr3D : MonoBehaviour {
 //			haveTile = true;
 //		}
 
-		Debug.Log("FoundTile: " + haveTile);
+//		Debug.Log("FoundTile: " + haveTile);
 		return haveTile;
 	}
 
@@ -265,10 +277,13 @@ public class BoardMgr3D : MonoBehaviour {
 						// stop the line here
 						AbortPath();
 					} else {
-						// We're drawing a line
-						touchedTiles.Add(tile);
-						tile.Highlight(true);
-						GameState.Instance.soundManager.PlayPathExtend();
+						// We're drawing a line - check whether we already have this one.
+						if (! touchedTiles.Contains(tile)) {
+							touchedTiles.Add(tile);
+							tile.Highlight(true);
+							GameState.Instance.soundManager.PlayPathExtend();
+							scoreA++;
+						} 
 					}
 				} else if (touchEnded && currentTouchState == TouchState.PathStarted) { 
 					TouchableTile.TileType endTouchType;
@@ -282,6 +297,8 @@ public class BoardMgr3D : MonoBehaviour {
 							touchedTiles.Clear();
 							currentTouchState = TouchState.NoTouch; 
 							GameState.Instance.soundManager.PlayPathSuccess();
+							scoreB += scoreA;
+							scoreA = 0;
 						} else {
 							// Abort the path
 							AbortPath();
@@ -296,6 +313,7 @@ public class BoardMgr3D : MonoBehaviour {
 
 			boardPositionText.text = currentTouchState.ToString();
 
+			SetScore();
 		}
 		
 	}
@@ -307,7 +325,7 @@ public class BoardMgr3D : MonoBehaviour {
 		}
 		touchedTiles.Clear();
 		currentTouchState = TouchState.NoTouch;
-		GameState.Instance.soundManager.PlayPathAbort();;
+		GameState.Instance.soundManager.PlayPathAbort();
 	}
 
 	public void EndLevel() {
@@ -315,4 +333,9 @@ public class BoardMgr3D : MonoBehaviour {
 		SceneManager.LoadScene("MenuScene", LoadSceneMode.Single);
 	}
 
+
+	private void SetScore() {
+		scoreAText.text = scoreA.ToString();
+		scoreBText.text = scoreB.ToString();
+	}
 }

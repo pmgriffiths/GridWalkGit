@@ -13,6 +13,9 @@ public class GameState : Singleton<GameState> {
 
 	public int level = 0;
 
+	public int scoreA = 0;
+	public int scoreB = 0;
+
 	// Ensure we can't be constructed
 	protected GameState() { }
 

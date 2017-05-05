@@ -171,7 +171,6 @@ public class BoardMgr3D : MonoBehaviour {
 		RaycastHit hit;
 
 		if (Physics.Raycast(hitRay, out hit, 100)) {
-			haveTile = true;
 			GameObject hitTile = hit.collider.gameObject;
 
 			// Look for tile at that location

@@ -904,8 +904,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb13f595671d477b969e3627a119555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialRows: 4
-  initialColumns: 4
+  initialRows: 6
+  initialColumns: 6
   intialSoundManager: {fileID: 114558562992827330, guid: 2f20967870a36495f8d63d7a88a658bd,
     type: 2}
 --- !u!82 &510155319
@@ -1191,7 +1191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
+  m_ScaleFactor: 0.75
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0

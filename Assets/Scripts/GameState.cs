@@ -8,8 +8,8 @@ public class GameState : Singleton<GameState> {
 	private bool initialised = false;
 	public SoundManager soundManager;
 
-	public int rows = 4;
-	public int columns = 4;
+	public int rows = 6;
+	public int columns = 6;
 
 	public int level = 0;
 

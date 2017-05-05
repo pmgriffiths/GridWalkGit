@@ -21,16 +21,13 @@ public class GameManager : MonoBehaviour {
 	private Text scoreAText;
 	private Text scoreBText;
 
-	private int scoreA = 0;
-	private int scoreB = 0;
-
 	// Use this for initialization
 	void Awake () {
 		InitialGameState initialGameState = GetComponent<InitialGameState> ();
 		GameState.Instance.Initialise (initialGameState);
 
 		Debug.Log("Getting rows + columns");
-//		rowText = GameObject.Find("RowText").GetComponent<Text>();
+		rowText = GameObject.Find("RowText").GetComponent<Text>();
 		columnText = GameObject.Find("ColumnText").GetComponent<Text>();
 		rowSlider = GameObject.Find("RowSlider").GetComponent<Slider>();
 		columnSlider = GameObject.Find("ColumnSlider").GetComponent<Slider>();
@@ -79,16 +76,17 @@ public class GameManager : MonoBehaviour {
 	public void RowValueChanged() {
 		GameState.Instance.rows = (int)rowSlider.value;
 		UpdateRowsAndColumns();
-		Debug.Log("UpdateRows to " + GameState.Instance.rows);
+//		Debug.Log("UpdateRows to " + GameState.Instance.rows);
 	}
 
 	public void ColumnValueChanged() { 
 		GameState.Instance.columns = (int)columnSlider.value;
 		UpdateRowsAndColumns();
-		Debug.Log("UpdateColumns to " + GameState.Instance.columns);
+//		Debug.Log("UpdateColumns to " + GameState.Instance.columns);
 	}
 
 	private void UpdateRowsAndColumns() { 
+		Debug.Log("GameState: " + GameState.Instance.ToString());
 		rowText.text = GameState.Instance.rows.ToString();	
 		rowSlider.value = GameState.Instance.rows;
 		columnText.text = GameState.Instance.columns.ToString();

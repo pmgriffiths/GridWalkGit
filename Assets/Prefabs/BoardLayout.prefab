@@ -53,6 +53,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floorTiles:
   - {fileID: 114957191216721512, guid: ba380e5e1d4934824b436a39d502cae4, type: 2}
+  - {fileID: 114279007621251928, guid: 1468dcde726544885a812bd83858ef3a, type: 2}
+  - {fileID: 114104317550008334, guid: e01da57539b4b4bd0bd0822f16a3a205, type: 2}
+  - {fileID: 114817046930662774, guid: 93893521cdd1c426b927a2a94d058f10, type: 2}
   outerWallTiles:
   - {fileID: 114753634544270470, guid: 71122ef5bcff848b691781eb20e491c3, type: 2}
   - {fileID: 114033929592652766, guid: f906ce9b9e8ce4bc5b12cc35d29d0208, type: 2}

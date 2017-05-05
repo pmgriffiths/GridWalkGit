@@ -12,7 +12,7 @@ public class BoardLayout : MonoBehaviour {
 		// Build the outer wall and floor tiles
 		for (int x = -1; x < columns + 1; x++) {
 			for (int y = -1; y < rows + 1; y++) {
-				TouchableTile toInstantiate = floorTiles[floorTiles.Length - 1];
+				TouchableTile toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
 				// Check for outer walls
 				Debug.Log("OutWalls: " + outerWallTiles.Length);
 				if (x == -1 || x == columns || y == -1 || y == rows) {

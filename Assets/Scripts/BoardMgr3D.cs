@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class BoardMgr3D : MonoBehaviour {
 
-	[Serializable]
+/**	[Serializable]
 	public class Count
 	{
 		public int minimum;
@@ -19,7 +19,7 @@ public class BoardMgr3D : MonoBehaviour {
 			minimum = min;
 			maximum = max;
 		}
-	}
+	} */
 
 	// Debug output text
 	private Text boardPositionText;
@@ -42,6 +42,8 @@ public class BoardMgr3D : MonoBehaviour {
 	private int scoreA = 0;
 	private int scoreB = 0;
 
+	// Position of previously touched tile
+	private Vector3 previousPosition;
 
 	// Keeps hierarchy clean using this as parent of tiles
 	private Transform boardHolder;
@@ -257,53 +259,65 @@ public class BoardMgr3D : MonoBehaviour {
 			// Need a wall tile at start of touch
 			if (foundTile) {
 
-				if (touchStarted && currentTouchState == TouchState.NoTouch) {
-					// Can we start a touch sequence
-					TouchableTile.TileType touchedType;
-					if (tile.CommenceTouch(out touchedType)) {
-						currentTouchState = TouchState.PathStarted;
-						pathTileType = touchedType;
-						touchedTiles.Clear();
-						touchedTiles.Add(tile);
-						tile.Highlight(true);
-						Debug.Log("GS.instance" + GameState.Instance);
-						Debug.Log("GS.instance.soundMgr" + GameState.Instance.soundManager);
+				// Check whether we've actually moved between tiles
+				Vector3 tilePosition = tile.transform.position;
+				if (previousPosition != tilePosition) {
+					// Yes - this is a new tile
+					TouchableTile.MovementDirection directionMoved =  FindDirection(previousPosition, tilePosition);
 
-						GameState.Instance.soundManager.PlayPathStart();
-					} 
-				} else if (touchMoved && currentTouchState == TouchState.PathStarted) {
-					if (tile.AbortTouch()) { 
-						// stop the line here
-						AbortPath();
-					} else {
-						// We're drawing a line - check whether we already have this one.
-						if (! touchedTiles.Contains(tile)) {
-							touchedTiles.Add(tile);
-							tile.Highlight(true);
-							GameState.Instance.soundManager.PlayPathExtend();
-							scoreA++;
-						} 
-					}
-				} else if (touchEnded && currentTouchState == TouchState.PathStarted) { 
-					TouchableTile.TileType endTouchType;
-
-					if (tile.CanFinishTouch(out endTouchType)) {
-						if (endTouchType == pathTileType) {
-							// This completes the sequence
-							foreach (TouchableTile degradeTile in touchedTiles) {
-								degradeTile.ApplyTouch();
-							}
+					if (touchStarted && currentTouchState == TouchState.NoTouch) {
+						// Can we start a touch sequence
+						TouchableTile.TileType touchedType;
+						if (tile.CommenceTouch(out touchedType)) {
+							currentTouchState = TouchState.PathStarted;
+							pathTileType = touchedType;
 							touchedTiles.Clear();
-							currentTouchState = TouchState.NoTouch; 
-							GameState.Instance.soundManager.PlayPathSuccess();
-							scoreB += scoreA;
-							scoreA = 0;
-						} else {
-							// Abort the path
+							touchedTiles.Add(tile);
+							previousPosition = tilePosition;
+							tile.Highlight(true);
+							Debug.Log("GS.instance" + GameState.Instance);
+							Debug.Log("GS.instance.soundMgr" + GameState.Instance.soundManager);
+
+							GameState.Instance.soundManager.PlayPathStart();
+						} 
+					} else if (touchMoved && currentTouchState == TouchState.PathStarted) {
+						if (tile.AbortTouch() || !tile.SupportsDirection(directionMoved)) { 
+							// stop the line here
 							AbortPath();
-							currentTouchState = TouchState.NoTouch; 
+						} else {
+							// We're drawing a line - check whether we already have this one.
+							if (!touchedTiles.Contains(tile)) {
+								touchedTiles.Add(tile);
+								previousPosition = tilePosition;
+								Debug.Log("Direction : " + directionMoved);
+								tile.Highlight(true);
+								GameState.Instance.soundManager.PlayPathExtend();
+								scoreA++;
+							} 
+						}
+					} else if (touchEnded && currentTouchState == TouchState.PathStarted) { 
+						TouchableTile.TileType endTouchType;
+
+						if (tile.CanFinishTouch(out endTouchType)) {
+							if (endTouchType == pathTileType) {
+								// This completes the sequence
+								foreach (TouchableTile degradeTile in touchedTiles) {
+									degradeTile.ApplyTouch();
+								}
+								touchedTiles.Clear();
+								currentTouchState = TouchState.NoTouch; 
+								GameState.Instance.soundManager.PlayPathSuccess();
+								scoreB += scoreA;
+								scoreA = 0;
+							} else {
+								// Abort the path
+								AbortPath();
+								currentTouchState = TouchState.NoTouch; 
+							}
 						}
 					}
+				} else {
+					// Same tile as previous - ignore
 				}
 			} else {
 				AbortPath();
@@ -315,6 +329,34 @@ public class BoardMgr3D : MonoBehaviour {
 			SetScore();
 		}
 		
+	}
+
+	// Finds the movement direction from the previous tile to the current one
+	private TouchableTile.MovementDirection FindDirection(Vector3 previous, Vector3 current) {
+		TouchableTile.MovementDirection direction = TouchableTile.MovementDirection.NONE;
+
+		// NB we can only move in one direction at once - diagonals are errors
+		float deltaX = current.x - previous.x;
+		float deltaY = current.y - previous.y;
+		float deltaZ = current.z - previous.z;
+
+		if (deltaX != 0) {
+			if (deltaY == 0 && deltaZ == 0) {
+				direction = deltaX > 0 ? TouchableTile.MovementDirection.X_INC : TouchableTile.MovementDirection.X_DEC;
+			} else {
+				direction = TouchableTile.MovementDirection.DIAGONAL;
+			}
+		} else if (deltaZ != 0) {
+			if (deltaY == 0) { 
+				direction = deltaZ > 0 ? TouchableTile.MovementDirection.Z_INC : TouchableTile.MovementDirection.Z_DEC;
+			} else {
+				direction = TouchableTile.MovementDirection.DIAGONAL;
+			}
+		} else if (deltaY != 0) {
+			direction = deltaY > 0 ? TouchableTile.MovementDirection.Y_INC : TouchableTile.MovementDirection.Y_DEC;
+		}
+
+		return direction;
 	}
 
 	private void AbortPath() {

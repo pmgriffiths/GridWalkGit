@@ -4,7 +4,10 @@ using UnityEngine;
 
 public abstract class TouchableTile : MonoBehaviour {
 
-	public enum TileType : int { Wall_0 = 0, Wall_1, Wall_2, Wall_3, Floor_0, Floor_1, Floor_2, Floor_3 };
+	public enum TileType : int { Wall_0 = 0, Wall_1, Wall_2, Wall_3, Floor_0, Floor_1, Floor_2, Floor_3, Floor_X, Floor_Z };
+
+	// Variables/types used for tracking movement direction between tiles
+	public enum MovementDirection { NONE, X_INC, X_DEC, Z_INC, Z_DEC, Y_INC, Y_DEC, DIAGONAL};
 
 	public TileType tileType;
 
@@ -27,4 +30,8 @@ public abstract class TouchableTile : MonoBehaviour {
 
 	// Show/hide an outline
 	public abstract void Highlight(bool highlight);
+
+	public virtual bool SupportsDirection(MovementDirection direction) {
+		return true;
+	}
 }

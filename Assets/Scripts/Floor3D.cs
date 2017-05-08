@@ -44,13 +44,13 @@ public class Floor3D : TouchableTile {
 
 	// Can we start a touch sequence ? 
 	public override bool CommenceTouch(out TouchableTile.TileType tileType) {
-		tileType = TileType.Floor_0;
+		tileType = this.tileType;
 		return false;
 	}
 
 	// Can we finish a touch seqeunce
 	public override bool CanFinishTouch(out TouchableTile.TileType tileType) {
-		tileType = TileType.Floor_0;
+		tileType = this.tileType;
 		return false;
 	}
 
@@ -74,9 +74,28 @@ public class Floor3D : TouchableTile {
 			gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
 			SetColour(Color.black);
 		}
-
-
 	}
-
-
+		
+	override public bool SupportsDirection(TouchableTile.MovementDirection direction) {
+		bool canMove = false;
+		Debug.Log("Tile: " + tileType + " Move: " + direction);
+		// Direction tiles only support direction movement
+		switch (tileType) {
+			case TileType.Floor_X:
+				if (direction == MovementDirection.X_DEC || direction == MovementDirection.X_INC) {
+					canMove = true;
+				}
+				break;
+			case TileType.Floor_Z:
+				if (direction == MovementDirection.Z_DEC || direction == MovementDirection.Z_INC) {
+					canMove = true;
+				}
+				break;
+			default:
+				canMove = true;
+				break;
+		}
+			
+		return canMove;
+	}
 }

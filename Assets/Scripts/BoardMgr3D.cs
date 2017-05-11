@@ -33,9 +33,9 @@ public class BoardMgr3D : MonoBehaviour {
 	private Text levelText;
 
 	// Public Variables
-	private int columns;
-	private int rows;
-	private int level;
+//	private int columns;
+//	private int rows;
+//	private int level;
 
 	private Text scoreAText;
 	private Text scoreBText;
@@ -49,9 +49,6 @@ public class BoardMgr3D : MonoBehaviour {
 	private Transform boardHolder;
 
 	public BoardLayout boardLayout;
-
-	// Tracks objects on the game board and whether there is an object there.
-	private List<Vector3> gridPositions = new List<Vector3>();
 
 	// Map of game objects on board by position
 	private Dictionary<Vector3, TouchableTile> tilePositions = new Dictionary<Vector3, TouchableTile>();
@@ -70,74 +67,53 @@ public class BoardMgr3D : MonoBehaviour {
 	private GameObject levelImage;
 
 	// Tile type of path being drawn
-	TouchableTile.TileType pathTileType;
+	BoardLayout.TileType pathTileType;
 
 	public void Awake() {
 		Debug.Log ("BoardManager is awake");
 
 		// take our state from the game state
-		rows = GameState.Instance.rows;
-		columns = GameState.Instance.columns;
-		level = ++GameState.Instance.level;
+	//	level = GameState.Instance.level;
 
 		scoreA = GameState.Instance.scoreA;
 		scoreB = GameState.Instance.scoreB;
 
+		levelImage = GameObject.Find("LevelImage");
+		levelText = GameObject.Find("LevelText").GetComponent<Text>();
+		boardHolder = new GameObject("Board").transform;
 
 		InitGame ();
 	}
 
 	// Clears the list of grid positions
-	private void IntialiseList() 
+	private void ClearTilePositions() 
 	{ 
-		gridPositions.Clear();
+		foreach (Transform child in boardHolder) {
+			Destroy(child.gameObject);
+		}
 
-		// Remove each tile
+/**		// Remove each tile
 		foreach (TouchableTile oldTile in tilePositions.Values) {
 			Destroy(oldTile);
-		}
+		} */
 		tilePositions.Clear();
 		touchedTiles.Clear();
 
-		for (int x = 1; x < columns - 1; x++) {
-			for (int y = 1; y < rows - 1; y++) {
-				// List of posible positions for tiles
-				gridPositions.Add(new Vector3(x, y, 0f));
-			}
-		}
 	}
 
 	// Initialise the game board 
 	void InitGame() {
-		SetupScene(level, rows, columns);
+//		SetupSceneFromManager(level);
+		SetupSceneFromBoardLayout(GameState.Instance.level);
 
-		levelImage = GameObject.Find("LevelImage");
-		GameObject levelTextObj = GameObject.Find ("LevelText");
-		Debug.Log ("Level text obj is " + levelTextObj);
-		levelText = GameObject.Find("LevelText").GetComponent<Text>();
-		levelText.text = "Level "+ level;
 		levelImage.SetActive(true);
+		levelText.text = "Level "+ GameState.Instance.level;
 		Invoke("HideLevelImage", levelStartDelay);
 
 		scoreAText = GameObject.Find("ScoreA").GetComponent<Text>();
 		scoreBText = GameObject.Find("ScoreB").GetComponent<Text>();
 		SetScore();
 	} 
-
-	// Sets up the board
-	void BoardSetup() 
-	{
-		Debug.Log("BoardManager boardSetup for rows " + rows + ", columns " + columns);
-
-		boardHolder = new GameObject("Board").transform;
-
-		boardLayout.SetupBoard(boardHolder, rows, columns, tilePositions);
-
-		// Position the camera
-		Camera cam = Camera.main;
-		cam.transform.position = new Vector3(-4, 4,  -4);
-
-	}
 
 	void GetDebugTextReferences()
 	{
@@ -148,15 +124,37 @@ public class BoardMgr3D : MonoBehaviour {
 	}
 
 
-	public void SetupScene (int level, int rows, int columns)
+
+	/**
+	 * Builds a scene from the GameManager rows + columns values 
+	 */
+	public void SetupSceneFromManager (int level)
 	{
-		this.rows = rows;
-		this.columns = columns;
-		IntialiseList();
-		BoardSetup();
-
-
 		GetDebugTextReferences();
+		ClearTilePositions();
+	
+		boardLayout.SetupBoard(boardHolder, GameState.Instance.rows, GameState.Instance.columns, tilePositions);
+
+		// Position the camera
+		Camera cam = Camera.main;
+		cam.transform.position = new Vector3(-4, 4,  -4);
+	}
+
+
+	/**
+	 * Builds a scene from the GameManager rows + columns values 
+	 */
+	public void SetupSceneFromBoardLayout (int level)
+	{
+		GetDebugTextReferences();
+		ClearTilePositions();
+
+		boardHolder = new GameObject("Board").transform;
+		boardLayout.CreateLevel(boardHolder, level, tilePositions);
+
+		// Position the camera
+		Camera cam = Camera.main;
+		cam.transform.position = new Vector3(-4, 4,  -4);
 	}
 
 	private bool CheckForTile(Vector2 touchPoint, out TouchableTile tile) {
@@ -267,7 +265,7 @@ public class BoardMgr3D : MonoBehaviour {
 
 					if (touchStarted && currentTouchState == TouchState.NoTouch) {
 						// Can we start a touch sequence
-						TouchableTile.TileType touchedType;
+						BoardLayout.TileType touchedType;
 						if (tile.CommenceTouch(out touchedType)) {
 							currentTouchState = TouchState.PathStarted;
 							pathTileType = touchedType;
@@ -296,7 +294,7 @@ public class BoardMgr3D : MonoBehaviour {
 							} 
 						}
 					} else if (touchEnded && currentTouchState == TouchState.PathStarted) { 
-						TouchableTile.TileType endTouchType;
+						BoardLayout.TileType endTouchType;
 
 						if (tile.CanFinishTouch(out endTouchType)) {
 							if (endTouchType == pathTileType) {
@@ -374,6 +372,17 @@ public class BoardMgr3D : MonoBehaviour {
 		SceneManager.LoadScene("MenuScene", LoadSceneMode.Single);
 	}
 
+	public void NextLevel() {
+		Debug.Log("NextLevel cur: " + GameState.Instance.level);
+		GameState.Instance.level += 1;
+		InitGame();
+	}
+
+	public void PrevLevel() {
+		Debug.Log("PrevLevel cur: " + GameState.Instance.level);
+		GameState.Instance.level -= 1;
+		InitGame();
+	}
 
 	private void SetScore() {
 		scoreAText.text = scoreA.ToString();

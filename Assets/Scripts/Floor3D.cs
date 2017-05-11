@@ -43,13 +43,13 @@ public class Floor3D : TouchableTile {
 	}
 
 	// Can we start a touch sequence ? 
-	public override bool CommenceTouch(out TouchableTile.TileType tileType) {
+	public override bool CommenceTouch(out BoardLayout.TileType tileType) {
 		tileType = this.tileType;
 		return false;
 	}
 
 	// Can we finish a touch seqeunce
-	public override bool CanFinishTouch(out TouchableTile.TileType tileType) {
+	public override bool CanFinishTouch(out BoardLayout.TileType tileType) {
 		tileType = this.tileType;
 		return false;
 	}
@@ -81,12 +81,12 @@ public class Floor3D : TouchableTile {
 		Debug.Log("Tile: " + tileType + " Move: " + direction);
 		// Direction tiles only support direction movement
 		switch (tileType) {
-			case TileType.Floor_X:
+			case BoardLayout.TileType.Floor_X:
 				if (direction == MovementDirection.X_DEC || direction == MovementDirection.X_INC) {
 					canMove = true;
 				}
 				break;
-			case TileType.Floor_Z:
+			case BoardLayout.TileType.Floor_Z:
 				if (direction == MovementDirection.Z_DEC || direction == MovementDirection.Z_INC) {
 					canMove = true;
 				}

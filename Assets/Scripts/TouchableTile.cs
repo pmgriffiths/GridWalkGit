@@ -4,21 +4,20 @@ using UnityEngine;
 
 public abstract class TouchableTile : MonoBehaviour {
 
-	public enum TileType : int { Wall_0 = 0, Wall_1, Wall_2, Wall_3, Floor_0, Floor_1, Floor_2, Floor_3, Floor_X, Floor_Z };
-
+//	public enum TileType : int { Wall_0 = 0, Wall_1, Wall_2, Wall_3, Floor_0, Floor_1, Floor_2, Floor_3, Floor_X, Floor_Z };
 	// Variables/types used for tracking movement direction between tiles
 	public enum MovementDirection { NONE, X_INC, X_DEC, Z_INC, Z_DEC, Y_INC, Y_DEC, DIAGONAL};
 
-	public TileType tileType;
+	public BoardLayout.TileType tileType;
 
 	// This tile has been touched
 //	public abstract bool OnTouch ();
 
 	// Can this originate a touch sequence
-	public abstract bool CommenceTouch(out TileType type);
+	public abstract bool CommenceTouch(out BoardLayout.TileType type);
 
 	// Could this tile finish a touch sequence
-	public abstract bool CanFinishTouch(out TileType type);
+	public abstract bool CanFinishTouch(out BoardLayout.TileType type);
 
 	// Does this tile interupt a touch sequence ? 
 	public abstract bool AbortTouch (); 

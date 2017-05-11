@@ -21,14 +21,14 @@ public class Wall3D : TouchableTile {
 
 
 	// Can we start a touch sequence ? 
-	public override bool CommenceTouch(out TouchableTile.TileType tileType) {
+	public override bool CommenceTouch(out BoardLayout.TileType tileType) {
 		tileType = this.tileType;
 		return true;
 	}
 
 
 	// Can we finish a touch seqeunce - only if we match the path type
-	public override bool CanFinishTouch(out TouchableTile.TileType tileType) {
+	public override bool CanFinishTouch(out BoardLayout.TileType tileType) {
 		tileType = this.tileType;
 		return true;
 	}

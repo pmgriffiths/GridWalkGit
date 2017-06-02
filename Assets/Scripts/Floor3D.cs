@@ -23,7 +23,8 @@ public class Floor3D : TouchableTile {
 		Debug.Log("DegradeFloor: " + hitPoints);
 		hitPoints--;
 
-		if (hitPoints <= 0) { 
+		// Hit points overridden if distressed...
+		if (hitPoints <= 0 || distressed) { 
 			// SetColour(Color.red);
 			//gameObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 			StartCoroutine("Fade");

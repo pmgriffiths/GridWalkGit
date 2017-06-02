@@ -109,3 +109,4 @@ MonoBehaviour:
   hitPoints: 3
   selectedColour: {r: 0.78431374, g: 0.3602941, b: 0.029411765, a: 0}
   expiredColour: {r: 0.3897059, g: 0.25678694, b: 0.22637327, a: 0}
+  distressedColour: {r: 0.53676474, g: 0.06314879, b: 0.26892668, a: 0}

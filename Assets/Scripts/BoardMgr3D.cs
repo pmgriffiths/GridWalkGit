@@ -69,6 +69,9 @@ public class BoardMgr3D : MonoBehaviour {
 	// Tile type of path being drawn
 	BoardLayout.TileType pathTileType;
 
+	// Type of previous tile if any
+	BoardLayout.TileType previousTileType;
+
 	public void Awake() {
 		Debug.Log ("BoardManager is awake");
 
@@ -266,7 +269,6 @@ public class BoardMgr3D : MonoBehaviour {
 
 					// Yes - this is a new tile
 					TouchableTile.MovementDirection directionMoved =  FindDirection(previousPosition, tilePosition);
-					TouchableTile.Movement movement = new TouchableTile.Movement (directionMoved, BoardLayout.TileType.UNDEF, pathTileType);
 
 
 					if (currentTouchState == TouchState.NoTouch) {
@@ -275,6 +277,7 @@ public class BoardMgr3D : MonoBehaviour {
 						if (tile.CommenceTouch(out touchedType)) {
 							currentTouchState = TouchState.PathStarted;
 							pathTileType = touchedType;
+							previousTileType = BoardLayout.TileType.UNDEF;
 							touchedTiles.Clear();
 							touchedTiles.Add(tile);
 							previousPosition = tilePosition;
@@ -285,6 +288,9 @@ public class BoardMgr3D : MonoBehaviour {
 							GameState.Instance.soundManager.PlayPathStart();
 						} 
 					} else if (currentTouchState == TouchState.PathStarted) {
+
+						TouchableTile.Movement movement = new TouchableTile.Movement (directionMoved, previousTileType, pathTileType);
+
 						if (tile.AbortTouch (pathTileType) || !tile.SupportsLine (movement)) { 
 							// stop the line here
 							AbortPath ();
@@ -301,29 +307,30 @@ public class BoardMgr3D : MonoBehaviour {
 							scoreB += scoreA;
 							scoreA = 0;
 							currentTouchState = TouchState.NoTouch; 
-
+							previousTileType = BoardLayout.TileType.UNDEF;
 						} else {
 							// We're drawing a line - add this one
-								touchedTiles.Add(tile);
-								previousPosition = tilePosition;
+							touchedTiles.Add(tile);
+							previousPosition = tilePosition;
 //								Debug.Log("Direction : " + directionMoved);
-								tile.Highlight(true);
-								GameState.Instance.soundManager.PlayPathExtend();
-								scoreA++;
-							} 
-						}
-					} 
-				} else {
-					// Same tile as previous - ignore
-				}
+							tile.Highlight(true);
+							previousTileType = tile.tileType;
+							GameState.Instance.soundManager.PlayPathExtend();
+							scoreA++;
+						} 
+					}
+				} 
 			} else {
-				AbortPath();
-				currentTouchState = TouchState.NoTouch;
+				// Same tile as previous - ignore
 			}
+		} else {
+			AbortPath();
+			currentTouchState = TouchState.NoTouch;
+		}
 
-			boardPositionText.text = currentTouchState.ToString();
+		boardPositionText.text = currentTouchState.ToString();
 
-			SetScore();
+		SetScore();
 	}
 
 	// Finds the movement direction from the previous tile to the current one

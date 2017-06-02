@@ -10,6 +10,11 @@ public class Floor3D : TouchableTile {
 	public Color selectedColour;
 	public Color expiredColour;
 
+	// Color to show if we've been moved onto from the 'wrong' tile type
+	public Color distressedColour;
+
+	private bool distressed = false;
+
 	// Called once before game starts
 	void Awake () {
 	}
@@ -76,7 +81,7 @@ public class Floor3D : TouchableTile {
 
 		if (showHighlight) {
 			gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
-			SetColour(selectedColour);
+			SetColour(distressed ? distressedColour : selectedColour);
 		} else {
 			gameObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 			// TODO: use black to disable emission - not sure this is right
@@ -105,7 +110,10 @@ public class Floor3D : TouchableTile {
 				canMove = true;
 				break;
 		}
-			
+
+		// We're not distressed starting with UNDEF as this is wall type - maybe type walls
+		// more clearly later on.
+		distressed = movement.prevType != tileType && movement.prevType != BoardLayout.TileType.UNDEF;
 		Highlight (canMove);
 		return canMove;
 	}

@@ -28,6 +28,7 @@ public abstract class TouchableTile : MonoBehaviour {
 
 	public BoardLayout.TileType tileType;
 
+
 	// This tile has been touched
 //	public abstract bool OnTouch ();
 

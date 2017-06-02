@@ -11,7 +11,7 @@ public class BoardLayout : MonoBehaviour {
 	// Ouch - tight, tight coupling.
 	public TouchableTile[] availableTileTypes;
 
-	public enum TileType { UNDEF = -1, Floor_0, Floor_1, Floor_2, Floor_3, Floor_X, Floor_Z, Wall_0, Wall_1, Floor_Red, Floor_Green, Floor_Blue};
+	public enum TileType { UNDEF = -1, Floor_0, Floor_1, Floor_2, Floor_3, Floor_X, Floor_Z, Wall_Red, Wall_Blue, Floor_Red, Floor_Green, Floor_Blue};
 
 	/**
 	 * Floor_0 = 0,  .... Floor_X = 4, Floor_Z = 5, Wall_0 = 6, Wall_1 = 7 **/

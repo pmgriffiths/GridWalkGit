@@ -271,8 +271,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3289088db905f43abb312a8d8e861be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  efxSource: {fileID: 82748947058521294}
-  musicSource: {fileID: 82210403973719600}
+  efxSource: {fileID: 0}
+  musicSource: {fileID: 0}
   audioMixer: {fileID: 0}
   lowPitchRange: 0.95
   highPitchRange: 1.05
@@ -280,3 +280,5 @@ MonoBehaviour:
   pathExtend: {fileID: 8300000, guid: c5e2a73ad4706440f93bf05df0b465fe, type: 3}
   pathAbort: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
   pathSuccess: {fileID: 8300000, guid: 2667a0a008b044e218b63df62e2be749, type: 3}
+  efxEnabled: 0
+  musicEnabled: 0

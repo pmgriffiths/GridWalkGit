@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class BoardLayout : MonoBehaviour {
 
-	public TouchableTile[] floorTiles;
-	public TouchableTile[] outerWallTiles;
+//	public TouchableTile[] floorTiles;
+//	public TouchableTile[] outerWallTiles;
 
 	// NB. This array MUST be be same length at TileType and populated by prefabs in the same order. 
 	// Ouch - tight, tight coupling.
 	public TouchableTile[] availableTileTypes;
 
-	public enum TileType { Floor_0, Floor_1, Floor_2, Floor_3, Floor_X, Floor_Z, Wall_0, Wall_1};
+	public enum TileType { UNDEF = -1, Floor_0, Floor_1, Floor_2, Floor_3, Floor_X, Floor_Z, Wall_0, Wall_1, Floor_Red, Floor_Green, Floor_Blue};
 
 	/**
-	 * Floor_0 = 0,  .... Floor_X = 4, Floor_Y = 5, Wall_0 = 6, Wall_1 = 8 **/
+	 * Floor_0 = 0,  .... Floor_X = 4, Floor_Z = 5, Wall_0 = 6, Wall_1 = 7 **/
 
 	private class BoardTemplate { 
 		public int rows  { get; set; }
@@ -34,6 +34,17 @@ public class BoardLayout : MonoBehaviour {
 		new int[] {6, 6, 6}, 
 		new int[] {6, 0, 6},
 		new int[] {6, 6, 6}
+	};
+
+	private static int[][] chequer = new int[][] {
+		new int[] { 6, 6, 6, 6, 6, 6, 6, 6 },
+		new int[] { 6, 9, 9, 8, 8, 9, 9, 6 },
+		new int[] { 6, 9, 9, 8, 8, 9, 9, 6 },
+		new int[] { 6, 8, 8, 8, 8, 8, 8, 6 },
+		new int[] { 6, 8, 8, 8, 8, 8, 8, 6 },
+		new int[] { 6, 9, 9, 8, 8, 9, 9, 6 },
+		new int[] { 6, 9, 9, 8, 8, 9, 9, 6 },
+		new int[] { 6, 6, 6, 6, 6, 6, 6, 6 }
 	};
 
 
@@ -60,14 +71,25 @@ public class BoardLayout : MonoBehaviour {
 	};
 
 
+	private static int[][] sixBySix = new int[][] {
+		new int[] {6, 6, 7, 6, 6, 6}, 
+		new int[] {6, 0, 4, 0, 1, 6},
+		new int[] {6, 0, 1, 1, 5, 7},
+		new int[] {6, 0, 1, 1, 5, 6},
+		new int[] {7, 0, 2, 3, 5, 6},
+		new int[] {6, 6, 6, 6, 7, 6}
+	};
+
 	private Dictionary<int, BoardTemplate> levels = new Dictionary<int, BoardTemplate>();
 
 	private void InitLevels() {
 		if (levels.Count == 0) {
-			levels.Add(0, new BoardTemplate(3, 3, minimal));
-			levels.Add(1, new BoardTemplate(4, 4, four));
-			levels.Add(2, new BoardTemplate(8, 4, eightByFour));
-			levels.Add(3, new BoardTemplate(4, 6, fourBySix));
+			levels.Add(0, new BoardTemplate(8, 8, chequer));
+			levels.Add(1, new BoardTemplate(3, 3, minimal));
+			levels.Add(2, new BoardTemplate(4, 4, four));
+			levels.Add(3, new BoardTemplate(8, 4, eightByFour));
+			levels.Add(4, new BoardTemplate(4, 6, fourBySix));
+			levels.Add(5, new BoardTemplate(6, 6, sixBySix));
 		}
 	} 
 
@@ -101,7 +123,7 @@ public class BoardLayout : MonoBehaviour {
 	}
 
 
-	public void SetupBoard(Transform boardHolder, int rows, int columns, Dictionary<Vector3, TouchableTile> tilePositions)
+/**	public void SetupBoard(Transform boardHolder, int rows, int columns, Dictionary<Vector3, TouchableTile> tilePositions)
 	{
 		// Build the outer wall and floor tiles
 		for (int x = -1; x < columns + 1; x++) {
@@ -125,6 +147,6 @@ public class BoardLayout : MonoBehaviour {
 
 			}
 		}
-	}
+	} */
 
 }

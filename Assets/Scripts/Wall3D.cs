@@ -28,14 +28,13 @@ public class Wall3D : TouchableTile {
 
 
 	// Can we finish a touch seqeunce - only if we match the path type
-	public override bool CanFinishTouch(out BoardLayout.TileType tileType) {
-		tileType = this.tileType;
-		return true;
+	public override bool CanFinishTouch(BoardLayout.TileType pathType) {
+		return tileType == pathType;
 	}
 
 	// Do we abort a touch sequence
-	public override bool AbortTouch() {
-		return false;
+	public override bool AbortTouch(BoardLayout.TileType pathType) {
+		return pathType != tileType;
 	}
 
 	override public void Highlight(bool showHighlight) {

@@ -6,6 +6,10 @@ public class Floor3D : TouchableTile {
 
 	public int hitPoints;
 
+	// See whether we can set colour from Unity editor
+	public Color selectedColour;
+	public Color expiredColour;
+
 	// Called once before game starts
 	void Awake () {
 	}
@@ -26,7 +30,7 @@ public class Floor3D : TouchableTile {
 	IEnumerator Fade() {
 		Renderer renderer = GetComponent<Renderer> ();
 
-		SetColour(Color.red);
+		SetColour(expiredColour);
 		for (float f = 1f; f >= 0; f -= 0.1f) {
 			Color c = renderer.material.color;
 			c.a = f;
@@ -49,13 +53,12 @@ public class Floor3D : TouchableTile {
 	}
 
 	// Can we finish a touch seqeunce
-	public override bool CanFinishTouch(out BoardLayout.TileType tileType) {
-		tileType = this.tileType;
+	public override bool CanFinishTouch(BoardLayout.TileType lineType) {
 		return false;
 	}
 
 
-	public override bool AbortTouch() { 
+	public override bool AbortTouch(BoardLayout.TileType pathType) { 
 		return hitPoints == 0;
 	}
 
@@ -65,29 +68,36 @@ public class Floor3D : TouchableTile {
 		mat.SetColor("_EmissionColor", colour);
 	}
 
+
+	// TODO:: work out how to change color and reset tile type to enable
+	// changes from nearby tiles
+
 	override public void Highlight(bool showHighlight) {
 
 		if (showHighlight) {
-			gameObject.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
-			SetColour(Color.grey);
-		} else {
 			gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+			SetColour(selectedColour);
+		} else {
+			gameObject.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+			// TODO: use black to disable emission - not sure this is right
 			SetColour(Color.black);
 		}
 	}
 		
-	override public bool SupportsDirection(TouchableTile.MovementDirection direction) {
+
+	override public bool SupportsLine(TouchableTile.Movement movement) {
 		bool canMove = false;
-		Debug.Log("Tile: " + tileType + " Move: " + direction);
+		Debug.Log("Tile: " + tileType + " Move: " + movement.direction);
+
 		// Direction tiles only support direction movement
 		switch (tileType) {
 			case BoardLayout.TileType.Floor_X:
-				if (direction == MovementDirection.X_DEC || direction == MovementDirection.X_INC) {
+				if (movement.direction == MovementDirection.X_DEC || movement.direction == MovementDirection.X_INC) {
 					canMove = true;
 				}
 				break;
 			case BoardLayout.TileType.Floor_Z:
-				if (direction == MovementDirection.Z_DEC || direction == MovementDirection.Z_INC) {
+				if (movement.direction == MovementDirection.Z_DEC || movement.direction == MovementDirection.Z_INC) {
 					canMove = true;
 				}
 				break;
@@ -96,6 +106,7 @@ public class Floor3D : TouchableTile {
 				break;
 		}
 			
+		Highlight (canMove);
 		return canMove;
 	}
 }

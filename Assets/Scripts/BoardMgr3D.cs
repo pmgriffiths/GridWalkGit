@@ -128,7 +128,7 @@ public class BoardMgr3D : MonoBehaviour {
 	/**
 	 * Builds a scene from the GameManager rows + columns values 
 	 */
-	public void SetupSceneFromManager (int level)
+/**	public void SetupSceneFromManager (int level)
 	{
 		GetDebugTextReferences();
 		ClearTilePositions();
@@ -138,7 +138,7 @@ public class BoardMgr3D : MonoBehaviour {
 		// Position the camera
 		Camera cam = Camera.main;
 		cam.transform.position = new Vector3(-4, 4,  -4);
-	}
+	} */
 
 
 	/**
@@ -242,6 +242,8 @@ public class BoardMgr3D : MonoBehaviour {
 		if (Input.GetMouseButtonDown(0)) {
 			touchStarted = true;
 		} else if (Input.GetMouseButton(0)) {
+
+			// TOOD: NB. This DOES NOT WORK FOR MOUSE - ONLY TOUCH
 			touchMoved = true;
 		} else if (Input.GetMouseButtonUp(0)) {
 			touchEnded = true;
@@ -256,14 +258,18 @@ public class BoardMgr3D : MonoBehaviour {
 
 			// Need a wall tile at start of touch
 			if (foundTile) {
-
 				// Check whether we've actually moved between tiles
 				Vector3 tilePosition = tile.transform.position;
 				if (previousPosition != tilePosition) {
+
+					Debug.Log ("Found Tile, tile type : " + tile.tileType + " state: " + currentTouchState);
+
 					// Yes - this is a new tile
 					TouchableTile.MovementDirection directionMoved =  FindDirection(previousPosition, tilePosition);
+					TouchableTile.Movement movement = new TouchableTile.Movement (directionMoved, BoardLayout.TileType.UNDEF, pathTileType);
 
-					if (touchStarted && currentTouchState == TouchState.NoTouch) {
+
+					if (currentTouchState == TouchState.NoTouch) {
 						// Can we start a touch sequence
 						BoardLayout.TileType touchedType;
 						if (tile.CommenceTouch(out touchedType)) {
@@ -278,42 +284,35 @@ public class BoardMgr3D : MonoBehaviour {
 
 							GameState.Instance.soundManager.PlayPathStart();
 						} 
-					} else if (touchMoved && currentTouchState == TouchState.PathStarted) {
-						if (tile.AbortTouch() || !tile.SupportsDirection(directionMoved)) { 
+					} else if (currentTouchState == TouchState.PathStarted) {
+						if (tile.AbortTouch (pathTileType) || !tile.SupportsLine (movement)) { 
 							// stop the line here
-							AbortPath();
+							AbortPath ();
+							currentTouchState = TouchState.NoTouch; 
+						} else if (tile.CanFinishTouch (pathTileType)) {
+							// This completes the sequence
+							Debug.Log("Completed sequence");
+							foreach (TouchableTile degradeTile in touchedTiles) {
+								degradeTile.ApplyTouch();
+							}
+							touchedTiles.Clear();
+							currentTouchState = TouchState.NoTouch; 
+							GameState.Instance.soundManager.PlayPathSuccess();
+							scoreB += scoreA;
+							scoreA = 0;
+							currentTouchState = TouchState.NoTouch; 
+
 						} else {
-							// We're drawing a line - check whether we already have this one.
-							if (!touchedTiles.Contains(tile)) {
+							// We're drawing a line - add this one
 								touchedTiles.Add(tile);
 								previousPosition = tilePosition;
-								Debug.Log("Direction : " + directionMoved);
+//								Debug.Log("Direction : " + directionMoved);
 								tile.Highlight(true);
 								GameState.Instance.soundManager.PlayPathExtend();
 								scoreA++;
 							} 
 						}
-					} else if (touchEnded && currentTouchState == TouchState.PathStarted) { 
-						BoardLayout.TileType endTouchType;
-
-						if (tile.CanFinishTouch(out endTouchType)) {
-							if (endTouchType == pathTileType) {
-								// This completes the sequence
-								foreach (TouchableTile degradeTile in touchedTiles) {
-									degradeTile.ApplyTouch();
-								}
-								touchedTiles.Clear();
-								currentTouchState = TouchState.NoTouch; 
-								GameState.Instance.soundManager.PlayPathSuccess();
-								scoreB += scoreA;
-								scoreA = 0;
-							} else {
-								// Abort the path
-								AbortPath();
-								currentTouchState = TouchState.NoTouch; 
-							}
-						}
-					}
+					} 
 				} else {
 					// Same tile as previous - ignore
 				}
@@ -325,8 +324,6 @@ public class BoardMgr3D : MonoBehaviour {
 			boardPositionText.text = currentTouchState.ToString();
 
 			SetScore();
-		}
-		
 	}
 
 	// Finds the movement direction from the previous tile to the current one
